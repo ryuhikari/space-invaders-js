@@ -1,0 +1,17 @@
+body {
+    background-color: #000;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+#game-title {
+    line-height: 10vh;
+    margin: 0;
+    color: #33FF00;
+}
+
+#canvas {
+    border: 3px solid #33FF00;
+    box-sizing: border-box;
+}
