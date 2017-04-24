@@ -2,13 +2,26 @@ body {
     background-color: #000;
     margin: 0;
     overflow: hidden;
-    text-align: center;
+    height: 100vh;
+}
+
+.title-container {
+	height: 10%;
+	vertical-align: middle;
 }
 
 #game-title {
-    line-height: 10vh;
     margin: 0;
     color: #33FF00;
+    height: 100%;
+    display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
+#canvas-container {
+	height: 90%;
+	text-align: center;
 }
 
 #canvas {

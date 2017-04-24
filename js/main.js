@@ -1,21 +1,22 @@
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
+var canvasContainer = document.getElementById("canvas-container");
 
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 const canvasRatio = canvasWidth / canvasHeight;
 
 function resize() {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const vr = vw / vh;
+    const canvasContainerWidth = canvasContainer.offsetWidth;
+    const canvasContainerHeight = canvasContainer.offsetHeight;
+    const canvasContainerRatio = canvasContainerWidth / canvasContainerHeight;
 
-    if (vr >= canvasRatio) {
-        canvas.width = (canvasWidth / canvasHeight) * vh; 
-        canvas.height = vh - 6;
+    if (canvasContainerRatio >= canvasRatio) {
+        canvas.width = (canvasWidth / canvasHeight) * canvasContainerHeight; 
+        canvas.height = canvasContainerHeight - 6;
     } else {
-        canvas.width = vw - 6;
-        canvas.height = (canvasHeight / canvasWidth) * vw;
+        canvas.width = canvasContainerWidth - 6;
+        canvas.height = (canvasHeight / canvasWidth) * canvasContainerWidth;
     }
 }
 
