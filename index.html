@@ -4,15 +4,24 @@
 	<meta charset="UTF-8">
 	<title>Space Invaders</title>
 
+	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="title-container">
-    	<h1 id="game-title">Space Invaders</h1>
-    </div>
-    <div id="canvas-container">
-    	<canvas id="canvas" width="256px" height="224px"></canvas>
-    </div>
+	<div class="page-wrapper">
+	    <div class="title-container">
+	    	<h1 id="game-title">Space Invaders</h1>
+	    </div>
+	    <div id="game-container">
+	    	<div id="game-info">
+	    		<div>Max score: <span>0</span></div>
+	    		<div>Tries: <span>0</span></div>
+	    	</div>
+		    <div id="canvas-container">
+		    	<canvas id="canvas" width="256px" height="224px"></canvas>
+		    </div>
+	    </div>
+	</div>
 	
 	<script src="js/main.js"></script>
 </body>

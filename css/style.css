@@ -3,6 +3,13 @@ body {
     margin: 0;
     overflow: hidden;
     height: 100vh;
+    color: #FFF;
+}
+
+.page-wrapper {
+	height: 100%;
+	max-width: 960px;
+	margin: 0 auto;
 }
 
 .title-container {
@@ -17,6 +24,16 @@ body {
     display: flex;
   	justify-content: center;
   	align-items: center;
+}
+
+#game-container {
+	height: 90%;
+}
+
+#game-info {
+	height: 10%;
+	padding: 0 20px;
+	box-sizing: border-box;
 }
 
 #canvas-container {
