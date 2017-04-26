@@ -39,7 +39,11 @@ function createEnemies(ufosPerRow, numRows, spaceX, spaceY, offsetX, offsetY, de
 
 var enemies = createEnemies(11, 5, 20, 15, 20, 30, [0, 1, 1, 2, 2]);
 
-// Function to draw every alive enemy in the array
+/**
+ * Function to draw every alive enemy in the array enemies
+ *
+ * enemies: array containing every alive alien ship
+ */
 function drawUfos(enemies){
     ctx.save();
     ctx.scale(SCALE_VALUE_UFOS, SCALE_VALUE_UFOS);
@@ -51,8 +55,13 @@ function drawUfos(enemies){
     ctx.restore();
 }
 
-// Function to move every enemy as a block (when at least one of them gets to the edge of the board,
-// move downwards and reverse direction)
+/**
+ * Function to move every alive enemy in the array enemies as a block.
+ * (When at least one enemy gets to the edge of the board, the block
+ * moves down and reverses direction)
+ *
+ * enemies: array containing every alive alien ship
+ */
 var changeDir = 0;
 function moveUfos(enemies){
     for (var i = 0; i < enemies.length; i++){
@@ -69,17 +78,33 @@ function moveUfos(enemies){
     }
 }
 
-////////////////////////////////////////////////
-///                 Animation                ///
-////////////////////////////////////////////////
+/**
+ * Function to shoot the bullets
+ */
+function shoot(){
+    for(var i = 0; i < bullets.length; i++){
+        bullets[i].draw();
+        bullets[i].move();
+        for(var j = 0; j < enemies.length; j++){
+            if(bullets[i].alienHit(enemies[j])){
+                bullets[i].splice(i, 1);
+                enemies[j].splice(j, 1);
+            }
+        }
+    }
+}
 
-// Function update, to animate the game
+/*
+ * Function update, to animate the game
+ */
 function update(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ship.draw();
     drawUfos(enemies);
     moveUfos(enemies);
-    
+
+    shoot();
+
     ID = requestAnimationFrame(update);
 }
 

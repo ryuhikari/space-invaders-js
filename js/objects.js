@@ -38,6 +38,8 @@ function PlayerShip(){
     this.x = canvas.width/2;
     this.y = canvas.height;
     this.color = "#33FF00";
+    this.centerX = 9;
+    this.centerY = 5;
 
     this.spaceship = [
 	    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -188,7 +190,7 @@ const enemyUfos = [ufo1, ufo2, ufo3, ufo4];
 
 /**
  * Enemy ships object constructor
- * 
+ *
  * ufo: array with 2 ufo models to draw
  * color: filling color
  * offsetX: X position on canvas
@@ -204,6 +206,8 @@ var UfoShip = function(ufo, color, offsetX, offsetY, points){
     this.color = color;
     this.offsetX = offsetX;
     this.offsetY = offsetY;
+
+    this.width = 17;
 
     this.dirX = 1;
     this.velX = 0.5;
@@ -237,3 +241,50 @@ var UfoShip = function(ufo, color, offsetX, offsetY, points){
     }
     */
 }
+
+/*
+ * Bullet object
+ *
+ * x: initial horizontal position
+ * y: initial vertical position
+ */
+
+function Bullet(x, y){
+	this.x = x;
+	this.y = y;
+	this.r = 2;
+	this.color = "#00FFF0";
+	this.hit = false;
+	this.speed = 4;
+
+	this.draw = function(){
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+		ctx.fillStyle = this.color;
+		ctx.fill();
+	}
+
+	this.alienHit = function(ufo){
+		var nextPosition = this.y + this.r;
+		if(this.x >= ufo.x && this.x <= ufo.x - ufo.width){
+			if(nextPosition >= ufo.y && nextPosition <= ufo.y - ufo.height){
+				this.hit = true;
+			}
+		}
+		return this.hit;
+	}
+
+	this.move = function(){
+		this.y -= this.speed;
+	}
+}
+
+var bullets = [];
+
+/**
+ * Control of playership's shots
+ */
+canvas.addEventListener("click", function(e){
+	var shot = new Bullet(ship.x + ship.centerX*SCALE_VALUE, ship.y);
+	bullets.push(shot);
+});
