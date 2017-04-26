@@ -79,6 +79,17 @@ function moveUfos(enemies){
 }
 
 /**
+ * Function to remove dead aliens
+ */
+function killUfos(enemies){
+    for(var i = enemies.length - 1; i>=0; i--){
+        if(enemies[i].dead){
+            enemies.splice(i, 1);
+        }
+    }
+}
+
+/**
  * Function to shoot the bullets
  */
 function shoot(){
@@ -87,9 +98,14 @@ function shoot(){
         bullets[i].move();
         for(var j = 0; j < enemies.length; j++){
             if(bullets[i].alienHit(enemies[j])){
-                bullets[i].splice(i, 1);
-                enemies[j].splice(j, 1);
+                enemies[j].kill();
+                bullets[i].kill();
             }
+        }
+    }
+    for(var k = bullets.length - 1; k>=0; k--){
+        if(bullets[k].dead){
+            bullets.splice(k, 1);
         }
     }
 }
@@ -102,6 +118,7 @@ function update(){
     ship.draw();
     drawUfos(enemies);
     moveUfos(enemies);
+    killUfos(enemies);
 
     shoot();
 

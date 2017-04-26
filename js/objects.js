@@ -215,6 +215,8 @@ var UfoShip = function(ufo, color, offsetX, offsetY, points){
     this.frames = 15;
     this.counter = 0;
 
+    this.dead = false;
+
     this.moveDownwards = function(){
         this.y += this.height;
         this.dirX *= -1;
@@ -234,6 +236,10 @@ var UfoShip = function(ufo, color, offsetX, offsetY, points){
 
     this.draw = function(){
         drawShip(this.ufo[this.mode], this.color, this.x, this.y);
+    }
+
+    this.kill = function(){
+    	this.dead = true;
     }
     /*// If enemy hits playership, game over automatically
     this.crash = function(player){
@@ -256,6 +262,7 @@ function Bullet(x, y){
 	this.color = "#00FFF0";
 	this.hit = false;
 	this.speed = 4;
+	this.dead = false;
 
 	this.draw = function(){
 		ctx.beginPath();
@@ -265,9 +272,9 @@ function Bullet(x, y){
 	}
 
 	this.alienHit = function(ufo){
-		var nextPosition = this.y + this.r;
-		if(this.x >= ufo.x && this.x <= ufo.x - ufo.width){
-			if(nextPosition >= ufo.y && nextPosition <= ufo.y - ufo.height){
+		var nextPosition = this.y + this.r + this.speed;
+		if(this.x >= ufo.x && this.x <= ufo.x + ufo.width){
+			if(nextPosition >= ufo.y && nextPosition <= ufo.y + ufo.height){
 				this.hit = true;
 			}
 		}
@@ -276,6 +283,10 @@ function Bullet(x, y){
 
 	this.move = function(){
 		this.y -= this.speed;
+	}
+
+	this.kill = function(){
+		this.dead = true;
 	}
 }
 
