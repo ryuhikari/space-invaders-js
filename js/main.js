@@ -7,12 +7,20 @@ function resize() {
     const canvasContainerRatio = canvasContainerWidth / canvasContainerHeight;
 
     if (canvasContainerRatio >= canvasRatio) {
-        canvas.width = (canvasWidth / canvasHeight) * canvasContainerHeight;
-        canvas.height = canvasContainerHeight - 6;
+        width = (canvasWidth / canvasHeight) * canvasContainerHeight;
+        canvas.width = width;
+
+        height = canvasContainerHeight - 6;
+        canvas.height = height;
     } else {
-        canvas.width = canvasContainerWidth - 6;
-        canvas.height = (canvasHeight / canvasWidth) * canvasContainerWidth;
+        width = canvasContainerWidth - 6;
+        canvas.width = width;
+
+        height = (canvasHeight / canvasWidth) * canvasContainerWidth;
+        canvas.height = height;
     }
+
+    scale = width / (ufosPerRow * spaceX + offsetX * 2);
 }
 
 window.addEventListener("resize", resize);
@@ -37,12 +45,12 @@ function createEnemies(ufosPerRow, numRows, spaceX, spaceY, offsetX, offsetY, de
     return enemies;
 }
 
-var enemies = createEnemies(11, 5, 20, 15, 20, 30, [0, 1, 1, 2, 2]);
+var enemies = createEnemies(ufosPerRow, numRows, spaceX, spaceY, offsetX, offsetY, design);
 
 // Function to draw every alive enemy in the array
 function drawUfos(enemies){
     ctx.save();
-    ctx.scale(SCALE_VALUE_UFOS, SCALE_VALUE_UFOS);
+    ctx.scale(scale, scale);
 
     for(var i = 0; i < enemies.length; i++){
         enemies[i].draw();
@@ -57,7 +65,7 @@ var changeDir = 0;
 function moveUfos(enemies){
     for (var i = 0; i < enemies.length; i++){
         enemies[i].move();
-        if (enemies[i].x >= canvas.width/SCALE_VALUE_UFOS-15 || enemies[i].x <= 0){
+        if (enemies[i].x >= canvas.width/scale-15 || enemies[i].x <= 0){
             changeDir = 1;
         }
     }
@@ -79,7 +87,7 @@ function update(){
     ship.draw();
     drawUfos(enemies);
     moveUfos(enemies);
-    
+
     ID = requestAnimationFrame(update);
 }
 
