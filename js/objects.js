@@ -273,8 +273,8 @@ function Bullet(x, y){
 
 	this.alienHit = function(ufo){
 		var nextPosition = this.y + this.r + this.speed;
-		if(this.x >= ufo.x && this.x <= ufo.x + ufo.width){
-			if(nextPosition >= ufo.y && nextPosition <= ufo.y + ufo.height){
+		if(this.x >= ufo.x*SCALE_VALUE_UFOS && this.x <= ufo.x*SCALE_VALUE_UFOS + ufo.width*SCALE_VALUE_UFOS){
+			if(nextPosition >= ufo.y*SCALE_VALUE_UFOS && nextPosition <= ufo.y*SCALE_VALUE_UFOS + ufo.height*SCALE_VALUE_UFOS){
 				this.hit = true;
 			}
 		}
