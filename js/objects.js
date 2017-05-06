@@ -45,6 +45,8 @@ function PlayerShip(){
     this.x = canvas.width/2;
     this.y = canvas.height;
     this.color = "#33FF00";
+    this.centerX = 9;
+    this.centerY = 5;
 
     this.spaceship = [
 	    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -212,11 +214,15 @@ var UfoShip = function(ufo, color, offsetX, offsetY, points){
     this.offsetX = offsetX;
     this.offsetY = offsetY;
 
+    this.width = 17;
+
     this.dirX = 1;
     this.velX = 0.5;
 
     this.frames = 15;
     this.counter = 0;
+
+    this.dead = false;
 
     this.moveDownwards = function(){
         this.y += this.height;
@@ -238,9 +244,65 @@ var UfoShip = function(ufo, color, offsetX, offsetY, points){
     this.draw = function(){
         drawShip(this.ufo[this.mode], this.color, this.x, this.y);
     }
+
+    this.kill = function(){
+    	this.dead = true;
+    }
     /*// If enemy hits playership, game over automatically
     this.crash = function(player){
 
     }
     */
 }
+
+/*
+ * Bullet object
+ *
+ * x: initial horizontal position
+ * y: initial vertical position
+ */
+
+function Bullet(x, y){
+	this.x = x;
+	this.y = y;
+	this.r = 2;
+	this.color = "#00FFF0";
+	this.hit = false;
+	this.speed = 4;
+	this.dead = false;
+
+	this.draw = function(){
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+		ctx.fillStyle = this.color;
+		ctx.fill();
+	}
+
+	this.alienHit = function(ufo){
+		var nextPosition = this.y + this.r + this.speed;
+		if(this.x >= ufo.x*SCALE_VALUE_UFOS && this.x <= ufo.x*SCALE_VALUE_UFOS + ufo.width*SCALE_VALUE_UFOS){
+			if(nextPosition >= ufo.y*SCALE_VALUE_UFOS && nextPosition <= ufo.y*SCALE_VALUE_UFOS + ufo.height*SCALE_VALUE_UFOS){
+				this.hit = true;
+			}
+		}
+		return this.hit;
+	}
+
+	this.move = function(){
+		this.y -= this.speed;
+	}
+
+	this.kill = function(){
+		this.dead = true;
+	}
+}
+
+var bullets = [];
+
+/**
+ * Control of playership's shots
+ */
+canvas.addEventListener("click", function(e){
+	var shot = new Bullet(ship.x + ship.centerX*SCALE_VALUE, ship.y);
+	bullets.push(shot);
+});
