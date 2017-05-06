@@ -1,0 +1,51 @@
+/* Navigation
+============================================================================= */
+#nav-sidebar {
+    display: none;
+}
+
+#close-nav-sidebar {
+    display: inline-block;
+    width: auto;
+}
+
+#up-button {
+    z-index: 999999;
+    padding: 0;
+    margin: 0;
+    display: block;
+    width: 50px;
+    line-height: 50px;
+    font-size: 15px!important;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    opacity: .6;
+}
+
+/* Title
+============================================================================= */
+#page-title,
+#page-title-nav {
+    font-weight: bold;
+}
+
+/* Sections
+============================================================================= */
+.open-section {
+    cursor: pointer;
+}
+
+#sign-up-content,
+#profile-content {
+    display: none;
+}
+
+/* Errors
+============================================================================= */
+#sign-up-errors-panel,
+#log-in-errors-panel,
+#game-errors-panel,
+#game-over-message {
+    display: none;
+}

@@ -6,10 +6,89 @@
 
 	<title>Space Invaders</title>
 
+    <!-- W3.CSS Framework -->
+    <link rel="stylesheet" href="css/w3/w3.css">
+    <link rel="stylesheet" href="css/w3/w3-theme.css">
+
+    <!-- Styles -->
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body id="top">
+    <a href="#top" id="up-button" class="smooth w3-button w3-xlarge w3-circle w3-theme-action">&#8896;</a>
+    <header>
+        <!-- Navigation Sidebar -->
+        <nav id="nav-sidebar" class="w3-sidebar w3-bar-block w3-theme-d2 w3-xlarge">
+            <div class="w3-cell-row">
+                <a href="#" id="close-nav-sidebar" class="w3-cell w3-bar-item w3-button w3-xxlarge w3-right-align w3-right">&times;</a>
+            </div>
 
+            <!-- Navigation sidebar links -->
+            <!-- They must be the same as the main navigation bellow -->
+
+            <a href="#top" class="smooth w3-bar-item w3-button">Home</a>
+            <a href="game.html" class="smooth w3-bar-item w3-button">Play</a>
+        </nav>
+
+        <!-- Navigation -->
+        <nav id="navigation" class="w3-bar w3-card-2 w3-theme-d2 w3-top w3-xlarge">
+            <div class="w3-content">
+                <!-- Navigation links -->
+                <a id="page-title-nav" href="#top" class="smooth w3-bar-item w3-button">Space Invaders</a>
+                <a href="#top" class="smooth w3-bar-item w3-button w3-hide-small">Home</a>
+                <a href="game.html" class="smooth w3-bar-item w3-button w3-hide-small">Play</a>
+                <!-- Open navigation sidebar -->
+                <a href="#" id="open-nav-sidebar" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium">&#9776;</a>
+            </div>
+        </nav>
+    </header>
+
+    <br><br>
+    <main class="w3-content">
+        <!-- Title -->
+        <div class="w3-container w3-center w3-padding">
+            <h1 id="page-title">Space Invaders</h1>
+        </div>
+
+        <div class="w3-content">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus ipsam at facilis consectetur ad necessitatibus officiis unde tenetur porro minima distinctio sit culpa iusto natus cumque quibusdam asperiores esse, enim.</p>
+            <p>Harum nostrum magni soluta ab dolore id accusamus, at nulla esse temporibus atque quasi veritatis dolor ipsam debitis non, fuga eveniet placeat eligendi numquam minima. Laudantium mollitia expedita placeat culpa.</p>
+            <p>Numquam consequuntur sit doloribus possimus veniam eaque fugit quod, ducimus. Delectus, recusandae sed adipisci, perferendis, molestias, repudiandae inventore assumenda ipsum consectetur fugit enim! Ut odit at nihil nulla nam ad.</p>
+            <p>Ducimus cupiditate ipsum optio quidem, veritatis cum fugiat quo consequatur assumenda est reiciendis aut quod quam modi tempore natus soluta quis inventore, suscipit earum! Exercitationem necessitatibus esse voluptatum maiores quibusdam.</p>
+            <p>Maiores enim minima, optio asperiores reiciendis, blanditiis, fugiat, harum saepe quibusdam quidem quia at. Illo voluptas ipsum perspiciatis ut voluptatem impedit minima, distinctio quasi vel nostrum, ducimus possimus, veritatis, modi.</p>
+            <p>Magnam soluta sequi quia cumque dicta repellendus officiis nam, dolorum, explicabo quibusdam, fugiat ea iste eos ab quam amet quisquam aliquam voluptatem nesciunt id odit pariatur. Dicta corrupti, aliquam vitae!</p>
+            <p>Enim aut unde earum in ipsam aperiam assumenda, ratione tempora iure ut pariatur nihil illo fuga recusandae blanditiis, laboriosam porro, autem ipsa ducimus ab rerum. Dolore tempora, soluta corrupti modi!</p>
+            <p>Maiores quo tenetur, ullam eligendi. Repudiandae enim vel corporis, atque nemo dolore iste animi error tempora quam consequuntur quisquam eligendi accusantium sequi optio voluptates voluptas nostrum sed amet qui aperiam.</p>
+            <p>Aliquam perferendis quaerat, quo enim praesentium quas quis vero. Soluta magni similique ratione, voluptate fuga aut. Placeat ipsam consequuntur magnam esse sapiente qui laboriosam natus aliquid assumenda, molestiae eaque minima!</p>
+            <p>Fugit id, suscipit rerum a! Illo magnam quaerat ex optio, sint explicabo recusandae quia eius, architecto fuga veniam facere eveniet autem perferendis et eos placeat dolor tempora iusto ipsam commodi.</p>
+        </div>
+    </main>
+
+    <footer class="w3-theme-d2 w3-small w3-center w3-margin-top">
+        <div class="w3-content">
+            <div class="w3-container">
+                <p>Project game for Client-side Programming course at Jönköping University 2017</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="show-info-modal" class="w3-modal w3-animate-opacity">
+        <div class="w3-modal-content w3-card-4">
+            <header id="show-info-modal__header" class="w3-container">
+                <span class="close-panel w3-button w3-large w3-display-topright" data-close="#show-info-modal">&times;</span>
+                <h2 id="show-info-modal__title">Server info</h2>
+            </header>
+            <div id="show-info-modal__content" class="w3-container">
+                <p w3-repeat="info">{{}}</p>
+            </div>
+            <footer id="show-info-modal__footer" class="w3-container w3-green"></footer>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery-3.2.1.min.js" charset="utf-8"></script>
+
+    <!-- Page scripts -->
+    <script src="js/gui.js" charset="utf-8"></script>
 </body>
 </html>
