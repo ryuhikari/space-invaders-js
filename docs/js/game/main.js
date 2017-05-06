@@ -1,125 +1,55 @@
 /**
- * Resize the canvas to expand the parent preserving aspect ratio
+ * Configuration
  */
-function resize() {
-    const canvasContainerWidth = canvasContainer.offsetWidth;
-    const canvasContainerHeight = canvasContainer.offsetHeight;
-    const canvasContainerRatio = canvasContainerWidth / canvasContainerHeight;
+const ufosPerRow = 11;
+const numRows = 5;
+const spaceX = 20;
+const spaceY = 15;
+const offsetX = 20;
+const offsetY = 30;
+const design = [0, 1, 1, 2, 2];
 
-    if (canvasContainerRatio >= canvasRatio) {
-        width = (canvasWidth / canvasHeight) * canvasContainerHeight;
-        canvas.width = width;
+const canvasWidth = canvas.width;
+const canvasHeight = canvas.height;
+const canvasRatio = canvasWidth / canvasHeight;
 
-        height = canvasContainerHeight - 6;
-        canvas.height = height;
-    } else {
-        width = canvasContainerWidth - 6;
-        canvas.width = width;
+var width;
+var height;
 
-        height = (canvasHeight / canvasWidth) * canvasContainerWidth;
-        canvas.height = height;
-    }
-
-    scale = width / (ufosPerRow * spaceX + offsetX * 2);
-}
-
-window.addEventListener("resize", resize);
-
-window.addEventListener("orientationchange", resize);
-
-resize();
-
-function createEnemies(ufosPerRow, numRows, spaceX, spaceY, offsetX, offsetY, design) {
-    var enemies = [];
-
-    for(var i = 0; i < numRows; i++){
-        var positionY = i * spaceY + offsetY
-        var selectUfo = design[i];
-        for(var j = 0; j < ufosPerRow; j++){
-            var positionX = j * spaceX + offsetX;
-            var enemyUfo = new UfoShip(enemyUfos[selectUfo].model, enemyUfos[selectUfo].color, positionX, positionY, enemyUfos[selectUfo].points);
-            enemies.push(enemyUfo);
-        }
-    }
-
-    return enemies;
-}
-
-var enemies = createEnemies(ufosPerRow, numRows, spaceX, spaceY, offsetX, offsetY, design);
+var ship;
+var enemies;
+var bullets = [];
 
 /**
- * Function to draw every alive enemy in the array enemies
- *
- * enemies: array containing every alive alien ship
+ * Control of playership with mouse (horizontal movement)
  */
-function drawUfos(enemies){
-    ctx.save();
-    ctx.scale(scale, scale);
-
-    for(var i = 0; i < enemies.length; i++){
-        enemies[i].draw();
-    }
-
-    ctx.restore();
-}
+//canvas.style.cursor = "none";
+canvas.addEventListener("mousemove", function(e){
+    ship.x = e.pageX - canvas.offsetLeft - 25;
+});
 
 /**
- * Function to move every alive enemy in the array enemies as a block.
- * (When at least one enemy gets to the edge of the board, the block
- * moves down and reverses direction)
- *
- * enemies: array containing every alive alien ship
+ * Control of playership's shots
  */
-var changeDir = 0;
-function moveUfos(enemies){
-    for (var i = 0; i < enemies.length; i++){
-        enemies[i].move();
-        if (enemies[i].x >= canvas.width/scale-15 || enemies[i].x <= 0){
-            changeDir = 1;
-        }
-    }
-    if (changeDir){
-        for(var j = 0; j<enemies.length; j++){
-            enemies[j].moveDownwards();
-        }
-        changeDir = 0;
-    }
-}
+canvas.addEventListener("click", function(e){
+    e.preventDefault();
+    var shot = new Bullet(ship.x + ship.centerX*scale, ship.y);
+    bullets.push(shot);
+});
 
 /**
- * Function to remove dead aliens
+ * Function setup: initialize the game.
  */
-function killUfos(enemies){
-    for(var i = enemies.length - 1; i>=0; i--){
-        if(enemies[i].dead){
-            enemies.splice(i, 1);
-        }
-    }
-}
+function setup(){
+	resize();
 
-/**
- * Function to shoot the bullets
- */
-function shoot(){
-    for(var i = 0; i < bullets.length; i++){
-        bullets[i].draw();
-        bullets[i].move();
-        for(var j = 0; j < enemies.length; j++){
-            if(bullets[i].alienHit(enemies[j])){
-                enemies[j].kill();
-                bullets[i].kill();
-            }
-        }
-    }
-    for(var k = bullets.length - 1; k>=0; k--){
-        if(bullets[k].dead){
-            bullets.splice(k, 1);
-        }
-    }
+	ship = new PlayerShip();
+	enemies = createEnemies(ufosPerRow, numRows, spaceX, spaceY, offsetX, offsetY, design);
+
 }
 
 /*
- * Function update, to animate the game
+ * Function update: animate the game.
  */
 function update(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -131,5 +61,7 @@ function update(){
 
     ID = requestAnimationFrame(update);
 }
+
+setup();
 
 update();

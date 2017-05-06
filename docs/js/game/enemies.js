@@ -1,85 +1,4 @@
 /**
- * Canvas
- */
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
-var canvasContainer = document.getElementById("canvas-container");
-
-/**
- * Configuration
- */
-var scale;
-const ufosPerRow = 11;
-const numRows = 5;
-const spaceX = 20;
-const spaceY = 15;
-const offsetX = 20;
-const offsetY = 30;
-const design = [0, 1, 1, 2, 2];
-
-const canvasWidth = canvas.width;
-const canvasHeight = canvas.height;
-const canvasRatio = canvasWidth / canvasHeight;
-
-var width;
-var height;
-
-/**
- * Ship drawing function, given a matrix
- */
-function drawShip(shipToDraw, color, offsetX, offsetY){
-    for(var i = 0; i < shipToDraw.length; i++){
-        for(var j = 0; j < shipToDraw[i].length; j++){
-            if(shipToDraw[i][j]){
-                ctx.fillStyle = color;
-                ctx.fillRect(j + offsetX, i + offsetY, 1, 1);
-            }
-        }
-    }
-}
-
-/**
- * Playership object constructor
- */
-function PlayerShip(){
-    this.x = canvas.width/2;
-    this.y = canvas.height;
-    this.color = "#33FF00";
-    this.centerX = 9;
-    this.centerY = 5;
-
-    this.spaceship = [
-	    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-	    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-	    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-	    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-	    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-	    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-	    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-	    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-	    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	];
-
-    this.draw = function(){
-    	ctx.save();
-        ctx.scale(scale, scale);
-        drawShip(this.spaceship, this.color, this.x/scale, this.y/scale);
-        ctx.restore();
-    }
-}
-
-var ship = new PlayerShip();
-
-/**
- * Control of playership with mouse (horizontal movement)
- */
-//canvas.style.cursor = "none";
-canvas.addEventListener("mousemove", function(e){
-    ship.x = e.pageX - canvas.offsetLeft - 25;
-
-});
-
-/**
  * Enemy ships
  */
 
@@ -178,7 +97,12 @@ const ufoModel4 = [
 ];
 
 /**
- * Ufo type constructor to hold the model, color and points of each enemy
+ * Function UfoType: Ufo type constructor to hold the model, color and points of each enemy.
+ *
+ * Inputs:
+ *	model: type of alien ship. Array containing the matrices with both forms of the alien ship.
+ *	color: color code of the alien ship.
+ *	points: points to add to the score when the alien ship dies.
  */
 function UfoType(model, color, points) {
 	this.model = model;
@@ -196,13 +120,14 @@ const ufo4 = new UfoType(ufoModel4, "red", 100);
 const enemyUfos = [ufo1, ufo2, ufo3, ufo4];
 
 /**
- * Enemy ships object constructor
+ * Function UfoShip: enemy ships object constructor.
  *
- * ufo: array with 2 ufo models to draw
- * color: filling color
- * offsetX: X position on canvas
- * offsetY: Y position on canvas
- * points: value to increment the player score if killed
+ * Inputs:
+ * 	ufo: array with 2 ufo models to draw.
+ * 	color: filling color.
+ * 	offsetX: X position on canvas.
+ * 	offsetY: Y position on canvas.
+ *	points: value to increment the player score if killed.
  */
 var UfoShip = function(ufo, color, offsetX, offsetY, points){
     this.x = offsetX;
@@ -255,54 +180,88 @@ var UfoShip = function(ufo, color, offsetX, offsetY, points){
     */
 }
 
-/*
- * Bullet object
+/**
+ * Function creatEnemies: draw the enemy ships.
  *
- * x: initial horizontal position
- * y: initial vertical position
+ * Inputs:
+ *	ufosPerRow: number of enemy ships in each row.
+ *	numRows: number of rows to draw.
+ *	spaceX: initial position of each enemy ship in the x-axis.
+ * 	spaceY: initial position of each enemy ship in the y-axis.
+ *	offsetX: offset distance in the x-axis.
+ *	offsetY: offset distance in the y-axis.
+ *	design: array containing the type of enemy ship for each row.
+ *
+ * Output:
+ *	enemies: array containing every enemy ship, with their position in the matrix that is their display.
  */
+function createEnemies(ufosPerRow, numRows, spaceX, spaceY, offsetX, offsetY, design) {
+    var enemies = [];
 
-function Bullet(x, y){
-	this.x = x;
-	this.y = y;
-	this.r = 2;
-	this.color = "#00FFF0";
-	this.hit = false;
-	this.speed = 4;
-	this.dead = false;
+    for(var i = 0; i < numRows; i++){
+        var positionY = i * spaceY + offsetY
+        var selectUfo = design[i];
+        for(var j = 0; j < ufosPerRow; j++){
+            var positionX = j * spaceX + offsetX;
+            var enemyUfo = new UfoShip(enemyUfos[selectUfo].model, enemyUfos[selectUfo].color, positionX, positionY, enemyUfos[selectUfo].points);
+            enemies.push(enemyUfo);
+        }
+    }
 
-	this.draw = function(){
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-		ctx.fillStyle = this.color;
-		ctx.fill();
-	}
-
-	this.alienHit = function(ufo){
-		var nextPosition = this.y + this.r + this.speed;
-		if(this.x >= ufo.x*SCALE_VALUE_UFOS && this.x <= ufo.x*SCALE_VALUE_UFOS + ufo.width*SCALE_VALUE_UFOS){
-			if(nextPosition >= ufo.y*SCALE_VALUE_UFOS && nextPosition <= ufo.y*SCALE_VALUE_UFOS + ufo.height*SCALE_VALUE_UFOS){
-				this.hit = true;
-			}
-		}
-		return this.hit;
-	}
-
-	this.move = function(){
-		this.y -= this.speed;
-	}
-
-	this.kill = function(){
-		this.dead = true;
-	}
+    return enemies;
 }
 
-var bullets = [];
+/**
+ * Function drawUfos: draw every alive enemy in the array enemies.
+ *
+ * Input:
+ *  enemies: array containing every alive alien ship.
+ */
+function drawUfos(enemies){
+    ctx.save();
+    ctx.scale(scale, scale);
+
+    for(var i = 0; i < enemies.length; i++){
+        enemies[i].draw();
+    }
+
+    ctx.restore();
+}
 
 /**
- * Control of playership's shots
+ * Function moveUfos: move every alive enemy in the array enemies as a block.
+ * 	(When at least one enemy gets to the edge of the board, the block moves
+ * 	down and reverses direction).
+ *
+ * Input:
+ * 	enemies: array containing every alive alien ship.
  */
-canvas.addEventListener("click", function(e){
-	var shot = new Bullet(ship.x + ship.centerX*SCALE_VALUE, ship.y);
-	bullets.push(shot);
-});
+var changeDir = 0;
+function moveUfos(enemies){
+    for (var i = 0; i < enemies.length; i++){
+        enemies[i].move();
+        if (enemies[i].x >= canvas.width/scale-15 || enemies[i].x <= 0){
+            changeDir = 1;
+        }
+    }
+    if (changeDir){
+        for(var j = 0; j<enemies.length; j++){
+            enemies[j].moveDownwards();
+        }
+        changeDir = 0;
+    }
+}
+
+/**
+ * Function killUfos: remove dead aliens.
+ *
+ * Input:
+ *	enemies: array containing every enemy ship still in game.
+ */
+function killUfos(enemies){
+    for(var i = enemies.length - 1; i>=0; i--){
+        if(enemies[i].dead){
+            enemies.splice(i, 1);
+        }
+    }
+}
