@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 
-	<title>Space Invaders</title>
+    <title>Space Invaders</title>
 
     <!-- W3.CSS Framework -->
     <link rel="stylesheet" href="css/w3/w3.css">
     <link rel="stylesheet" href="css/w3/w3-theme.css">
 
     <!-- Styles -->
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body id="top">
     <a href="#top" id="up-button" class="smooth w3-button w3-xlarge w3-circle w3-theme-action">&#8896;</a>
@@ -50,18 +50,12 @@
             <h1 id="page-title">Space Invaders</h1>
         </div>
 
-        <div class="w3-content">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus ipsam at facilis consectetur ad necessitatibus officiis unde tenetur porro minima distinctio sit culpa iusto natus cumque quibusdam asperiores esse, enim.</p>
-            <p>Harum nostrum magni soluta ab dolore id accusamus, at nulla esse temporibus atque quasi veritatis dolor ipsam debitis non, fuga eveniet placeat eligendi numquam minima. Laudantium mollitia expedita placeat culpa.</p>
-            <p>Numquam consequuntur sit doloribus possimus veniam eaque fugit quod, ducimus. Delectus, recusandae sed adipisci, perferendis, molestias, repudiandae inventore assumenda ipsum consectetur fugit enim! Ut odit at nihil nulla nam ad.</p>
-            <p>Ducimus cupiditate ipsum optio quidem, veritatis cum fugiat quo consequatur assumenda est reiciendis aut quod quam modi tempore natus soluta quis inventore, suscipit earum! Exercitationem necessitatibus esse voluptatum maiores quibusdam.</p>
-            <p>Maiores enim minima, optio asperiores reiciendis, blanditiis, fugiat, harum saepe quibusdam quidem quia at. Illo voluptas ipsum perspiciatis ut voluptatem impedit minima, distinctio quasi vel nostrum, ducimus possimus, veritatis, modi.</p>
-            <p>Magnam soluta sequi quia cumque dicta repellendus officiis nam, dolorum, explicabo quibusdam, fugiat ea iste eos ab quam amet quisquam aliquam voluptatem nesciunt id odit pariatur. Dicta corrupti, aliquam vitae!</p>
-            <p>Enim aut unde earum in ipsam aperiam assumenda, ratione tempora iure ut pariatur nihil illo fuga recusandae blanditiis, laboriosam porro, autem ipsa ducimus ab rerum. Dolore tempora, soluta corrupti modi!</p>
-            <p>Maiores quo tenetur, ullam eligendi. Repudiandae enim vel corporis, atque nemo dolore iste animi error tempora quam consequuntur quisquam eligendi accusantium sequi optio voluptates voluptas nostrum sed amet qui aperiam.</p>
-            <p>Aliquam perferendis quaerat, quo enim praesentium quas quis vero. Soluta magni similique ratione, voluptate fuga aut. Placeat ipsam consequuntur magnam esse sapiente qui laboriosam natus aliquid assumenda, molestiae eaque minima!</p>
-            <p>Fugit id, suscipit rerum a! Illo magnam quaerat ex optio, sint explicabo recusandae quia eius, architecto fuga veniam facere eveniet autem perferendis et eos placeat dolor tempora iusto ipsam commodi.</p>
+        <div id="mapholder">
         </div>
+
+        <div id="map"></div>
+        <div id="demo"></div>
+        <button type="button" name="button" onclick="getLocation('map', 'demo');">Show map</button>
     </main>
 
     <footer class="w3-theme-d2 w3-small w3-center w3-margin-top">
@@ -92,5 +86,6 @@
 
     <!-- Page scripts -->
     <script src="js/gui.js" charset="utf-8"></script>
+    <script src="js/location/location.js" charset="utf-8"></script>
 </body>
 </html>

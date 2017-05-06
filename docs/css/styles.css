@@ -32,20 +32,8 @@
 
 /* Sections
 ============================================================================= */
-.open-section {
-    cursor: pointer;
-}
-
-#sign-up-content,
-#profile-content {
-    display: none;
-}
-
-/* Errors
-============================================================================= */
-#sign-up-errors-panel,
-#log-in-errors-panel,
-#game-errors-panel,
-#game-over-message {
-    display: none;
+#map {
+    width: 100%;
+    height: 200px;
+    display: none
 }
