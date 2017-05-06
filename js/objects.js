@@ -8,14 +8,21 @@ var canvasContainer = document.getElementById("canvas-container");
 /**
  * Configuration
  */
-const SCALE_VALUE = 3;
-const SCALE_VALUE_UFOS = 2;
-const UFOS_PER_ROW = 11;
-const N_ROWS = 5;
+var scale;
+const ufosPerRow = 11;
+const numRows = 5;
+const spaceX = 20;
+const spaceY = 15;
+const offsetX = 20;
+const offsetY = 30;
+const design = [0, 1, 1, 2, 2];
 
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 const canvasRatio = canvasWidth / canvasHeight;
+
+var width;
+var height;
 
 /**
  * Ship drawing function, given a matrix
@@ -50,13 +57,13 @@ function PlayerShip(){
 	    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
 	    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
 	    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-	    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 	];
 
     this.draw = function(){
     	ctx.save();
-        ctx.scale(SCALE_VALUE, SCALE_VALUE);
-        drawShip(this.spaceship, this.color, this.x/SCALE_VALUE, this.y/SCALE_VALUE);
+        ctx.scale(scale, scale);
+        drawShip(this.spaceship, this.color, this.x/scale, this.y/scale);
         ctx.restore();
     }
 }
