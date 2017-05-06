@@ -1,27 +1,35 @@
 /**
 * Navigation
 */
-var navigation = $("#navigation");
-var navigationSidebar = $("#nav-sidebar");
+var navigation = document.getElementById("navigation");
+var navigationSidebar = document.getElementById("nav-sidebar");
 
+function hide(element) {
+    element.style.display = "none";
+}
+
+function show(element) {
+    element.style.display = "initial";
+}
 /**
 * Open and close navigation sidebar
 */
 function openNav() {
-    navigation.hide();
-    navigationSidebar.css({"width": "100%", "display": "block"});
+    hide(navigation);
+    navigationSidebar.style.width = "100%";
+    navigationSidebar.style.display = "block";
 }
 
 function closeNav() {
-    navigation.show();
-    navigationSidebar.hide();
+    show(navigation);
+    hide(navigationSidebar);
 }
 
-var openNavButton = $("#open-nav-sidebar").on("click", function(event) {
+var openNavButton = document.getElementById("open-nav-sidebar").addEventListener("click", function(event) {
     event.preventDefault();
     openNav();
 });
-var closeNavButton = $("#close-nav-sidebar").on("click", function(event) {
+var closeNavButton = document.getElementById("close-nav-sidebar").addEventListener("click", function(event) {
     event.preventDefault();
     closeNav();
 });
@@ -29,56 +37,49 @@ var closeNavButton = $("#close-nav-sidebar").on("click", function(event) {
 /**
 * Close panels
 */
-var closePanel = $(".close-panel").on("click", function(event) {
-    event.preventDefault();
+var closePanel = document.getElementsByClassName("close-panel");
+for (var i = 0; i < closePanel.length; i++) {
+    closePanel[i].addEventListener("click", function(event) {
+        event.preventDefault();
 
-    var closeElement = $(this).attr("data-close");
-    var closeElement = $(closeElement);
-    closeElement.hide();
-});
+        var closeElement = this.getAttribute("data-close");
+        console.log(closeElement);
+        var closeElement = document.getElementById(closeElement);
+        hide(closeElement);
+    });
+}
 
 /**
 * Show info messages
 */
 function showInfo(data) {
-    var modal = $("#show-info-modal");
-    var modalHeader = $("#show-info-modal__header");
-    var modalTitle = $("#show-info-modal__title");
-    var modalContent = $("#show-info-modal__content");
-    var modalFooter = $("#show-info-modal__footer");
+    var modal = document.getElementById("show-info-modal");
+    var modalHeader = document.getElementById("show-info-modal__header");
+    var modalTitle = document.getElementById("show-info-modal__title");
+    var modalContent = document.getElementById("show-info-modal__content");
+    var modalFooter = document.getElementById("show-info-modal__footer");
 
     var title = data.from;
-    console.log(title);
     switch (title) {
         case "createAccount":
-            modalTitle.html("Create account information");
+            modalTitle.innerHTML = "Create account information";
             break;
         case "logIn":
-            modalTitle.html("Log in information");
+            modalTitle.innerHTML = "Log in information";
             break;
         case "signOut":
-            modalTitle.html("Sign out information");
+            modalTitle.innerHTML = "Sign out information";
             break;
         case "addScore":
-            modalTitle.html("Add score information");
+            modalTitle.innerHTML = "Add score information";
             break;
         default:
-            return;
+            break;
     }
 
-    if (data.status === 200) {
-        modalHeader.css({"background-color": "green", "color": "white"});
-        modalFooter.css({"background-color": "green", "color": "white"});
-    } else {
-        modalHeader.css({"background-color": "red", "color": "white"});
-        modalFooter.css({"background-color": "red", "color": "white"});
-    }
-    w3DisplayData("show-info-modal__content", data);
-
-    modal.show();
-
+    show(modal);
     setTimeout(function() {
-        modal.fadeOut();
+        hide(modal);
     }, 2000);
 }
 
