@@ -7,8 +7,8 @@ document.head.appendChild(script);
 var mapHolder;
 var messageHolder;
 function getLocation(mapHolderID, messageHolderID) {
-    mapHolder = document.getElementById(mapHolderID);
-    messageHolder = document.getElementById(messageHolderID);
+    mapHolder = mapHolderID;
+    messageHolder = messageHolderID;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
@@ -48,4 +48,5 @@ function showError(error) {
         messageHolder.innerHTML = "An unknown error occurred."
         break;
     }
+    messageHolder.style.display = "block";
 }

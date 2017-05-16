@@ -35,6 +35,13 @@ var closeNavButton = document.getElementById("close-nav-sidebar").addEventListen
 });
 
 /**
+* Show map with user location
+*/
+var mapHolder = document.getElementById("map");
+var showMapError = document.getElementById("map-errors");
+var showLocationButton = document.getElementById("show-location-button");
+
+/**
 * Close panels
 */
 var closePanel = document.getElementsByClassName("close-panel");
