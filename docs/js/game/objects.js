@@ -91,7 +91,12 @@ function Alien(sprite, x, y, offset, width, height) {
     this.offset = offset;
     this.width = width;
     this.height = height;
+    this.alive = true;
 };
+
+Alien.prototype.kill = function(){
+    this.alive = false;
+}
 
 // Aliens
 function aliensMove(aliens, dir, amount) {
@@ -100,27 +105,65 @@ function aliensMove(aliens, dir, amount) {
     }
 }
 
-// Alien
+// Ship
 function Ship(sprite, x, y, width, height) {
     this.sprite = sprite,
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.alive = true;
+};
+
+Ship.prototype.kill = function(){
+    this.alive = false;
 };
 
 // Bullet
-function Bullet(x, y, vely, w, h, color) {
+function Bullet(x, y, direction) {
     this.x = x;
     this.y = y;
-    this.vely = vely;
-    this.width = w;
-    this.height = h;
-    this.color = color;
+    this.vely = 8;
+    this.width = 2;
+    this.height = 6;
+    this.color = "#fff";
+    this.direction = direction;
+    this.alive = true;
 };
 
 Bullet.prototype.move = function () {
-    this.y += this.vely;
+    this.y += this.vely * this.direction;
+};
+
+Bullet.prototype.kill = function(){
+    this.alive = false;
+};
+
+Bullet.prototype.checkHit = function(aliens, ship){
+    var nextPosition = this.y + this.height/2 + this.vely*this.direction;
+
+    if(this.direction === -1){ // Ship shot
+        for(var j = 0; j<aliens.length; j++){
+            if(this.x >= aliens[j].x && this.x + this.width <= aliens[j].x + aliens[j].width){
+                if(nextPosition <= aliens[j].y + aliens[j].height && nextPosition >= aliens[j].y){
+                    aliens[j].kill();
+                    this.kill();
+                    break;
+                }
+            }
+        }
+    }else if(this.direction === 1){ // Alien shot
+        if(this.x >= ship.x && this.x + this.width <= ship.x + ship.width){
+            if(nextPosition <= ship.y + ship.height && nextPosition >= ship.y + ship.height/2){
+                ship.kill();
+                this.kill();
+            }
+        }
+    }
+
+    if(this.y < 0 || this.y > Board.height){
+        this.kill();
+    }
 };
 
 // InputHandeler

@@ -1,23 +1,3 @@
-if (window.DeviceOrientationEvent) {
-  // Listen for the event and handle DeviceOrientationEvent object
-  window.addEventListener('deviceorientation', function(eventData) {
-    // gamma is the left-to-right tilt in degrees, where right is positive
-    var tiltLR = eventData.gamma;
-    var aux = Math.max(tiltLR, -30);
-    aux = Math.min(tiltLR, 30);
-    aux = aux * 100 / 30 / 100;
-    aux = (board.width / 2) * (1+aux);
-    ship.x = aux - ship.width / 2;
-  }, false);
-}
-
-if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-    // Touch events are supported
-    window.addEventListener("touchstart", function(event) {
-        bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -8, 2, 6, "#fff"));
-    }, false)
-}
-
 var
 
 board,
@@ -40,6 +20,26 @@ dir,
 ship,
 bullets,
 cities;
+
+if (window.DeviceOrientationEvent) {
+  // Listen for the event and handle DeviceOrientationEvent object
+  window.addEventListener('deviceorientation', function(eventData) {
+    // gamma is the left-to-right tilt in degrees, where right is positive
+    var tiltLR = eventData.gamma;
+    var aux = Math.max(tiltLR, -30);
+    aux = Math.min(tiltLR, 30);
+    aux = aux * 100 / 30 / 100;
+    aux = (board.width / 2) * (1+aux);
+    ship.x = aux - ship.width / 2;
+  }, false);
+}
+
+if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+    // Touch events are supported
+    window.addEventListener("touchstart", function(event) {
+        bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -1));
+    }, false)
+}
 
 function main() {
     board = new Board("canvas-container", 224, 256);
@@ -66,7 +66,7 @@ function main() {
 
 function init() {
     frames  = 0;
-    moveFreq = 60;
+    moveFreq = 60;      // 60
     spriteVersion = 0;
 
     rowPattern = [1, 0, 0, 2, 2];
@@ -121,12 +121,19 @@ function update() {
     ship.x = Math.max(ship.x, 0);
 
     if (input.isPressed(32)) { // Space key
-        bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -8, 2, 6, "#fff"));
+        if(ship.alive){
+            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -1));
+        }
     }
 
     for (var i = 0; i < bullets.length; i++) {
         var bullet = bullets[i];
+        if(!bullet.alive){
+            bullets.splice(i, 1);
+            i--;
+        }
         bullet.move();
+        bullet.checkHit(aliens, ship);
     }
 
     if (frames % moveFreq === 0) {
@@ -144,20 +151,38 @@ function update() {
             }
         }
     }
+
+    if(Math.random() < 0.05 && aliens.length > 0){
+        var s = Math.floor(Math.random()*aliens.length);
+        bullets.push(new Bullet(aliens[s].x + aliens[s].width/2, aliens[s].y + aliens[s].height, 1));
+    }
+
+
 };
 
 function render() {
     board.clear();
+
     for (var i = 0; i < aliens.length; i++) {
         var alien = aliens[i];
-        board.drawAlien(alien, spriteVersion);
+        if(alien.alive){
+            board.drawAlien(alien, spriteVersion);
+        }else{
+            aliens.splice(i, 1);
+            i--;
+            moveFreq == Math.max(1, moveFreq--);
+        }
     }
 
-    board.drawShip(ship)
+    if(ship.alive){
+        board.drawShip(ship);
+    }
 
     for (var i = 0; i < bullets.length; i++) {
         var bullet = bullets[i];
-        board.drawBullet(bullet);
+        if(bullet.alive){
+            board.drawBullet(bullet);
+        }
     }
 };
 
