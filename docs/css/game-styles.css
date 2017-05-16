@@ -1,8 +1,11 @@
 body {
     background-color: #000;
+    background-image: url("../img/cabinet-background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 60%;
     margin: 0;
     overflow: hidden;
-    height: 100vh;
     color: #FFF;
 }
 
@@ -12,37 +15,31 @@ body {
 	margin: 0 auto;
 }
 
-.title-container {
-	height: 10%;
-	vertical-align: middle;
-}
-
-#game-title {
-    margin: 0;
-    color: #33FF00;
-    height: 100%;
-    display: flex;
-  	justify-content: center;
-  	align-items: center;
-}
-
-#game-container {
-	height: 90%;
-}
-
-#game-info {
-	height: 10%;
-	padding: 0 20px;
-	box-sizing: border-box;
-    text-align: center;
-}
-
 #canvas-container {
-	height: 90%;
+	height: 100%;
 	text-align: center;
+
+    position: relative;
 }
 
-#canvas {
+.canvas-style {
     border: 3px solid #33FF00;
     box-sizing: border-box;
+    background-color: rgba(0, 0, 0, .5);
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#back-arrow a {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: rotate(180deg);
+    color: #33FF00;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 2em;
 }

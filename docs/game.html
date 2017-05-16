@@ -3,32 +3,28 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#616161">
+    <meta name="mobile-web-app-capable" content="yes">
 
 	<title>Space Invaders</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/game-styles.css">
 </head>
 <body>
 	<div class="page-wrapper">
-	    <div class="title-container">
-	    	<h1 id="game-title">Space Invaders</h1>
-	    </div>
-	    <div id="game-container">
-	    	<div id="game-info">
-	    		<div>Max score: <span>0</span></div>
-	    		<div>Tries: <span>0</span></div>
-	    	</div>
-		    <div id="canvas-container">
-		    	<canvas id="canvas" width="224" height="256px"></canvas>
-		    </div>
+	    <div id="canvas-container">
+	    	<!-- <canvas id="canvas" width="224px" height="256px"></canvas> -->
 	    </div>
 	</div>
 
-	<script src="js/game/layout.js"></script>
-	<script src="js/game/player.js"></script>
-	<script src="js/game/enemies.js"></script>
-	<script src="js/game/bullets.js"></script>
+    <div id="back-arrow"><a href="index.html">&#10140;</a></div>
+
+	<script src="js/game/objects.js"></script>
 	<script src="js/game/main.js"></script>
 </body>
 </html>
