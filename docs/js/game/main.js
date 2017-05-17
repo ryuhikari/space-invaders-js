@@ -4,8 +4,10 @@ board,
 input,
 frames,
 moveFreq,
+moveFreqInit,
 
 rowPattern,
+alienScore,
 numAlienColumns,
 columnWidth,
 
@@ -37,7 +39,9 @@ if (window.DeviceOrientationEvent) {
 if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
     // Touch events are supported
     window.addEventListener("touchstart", function(event) {
-        bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -1));
+        if(ship.alive){
+            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -1));
+        }
     }, false)
 }
 
@@ -66,10 +70,12 @@ function main() {
 
 function init() {
     frames  = 0;
-    moveFreq = 60;      // 60
+    moveFreqInit = 60;   //60
+    moveFreq = moveFreqInit;
     spriteVersion = 0;
 
     rowPattern = [1, 0, 0, 2, 2];
+    alienScore = [300, 200, 200, 100, 100];
     numAlienColumns = 11;
     maxSpriteWidth = "110";
 
@@ -79,21 +85,12 @@ function init() {
     dir = columnWidth;
 
     aliens = [];
-    for (var i = 0; i < rowPattern.length; i++) {
-        var alienType = rowPattern[i];
-        var alien = alienSprite[alienType];
-        var width = alien[0].width * columnWidth * 2 / maxSpriteWidth;
-        var height = alien[0].height / alien[0].width * width;
-        var offsetColumn = (columnWidth * 2 - width)*0.5;
-        for (var j = 0; j < numAlienColumns; j++) {
-            aliens.push(new Alien(alien, (columnWidth*3)*j, board.height*0.1 + (height*1.5)*i, offsetColumn, width, height));
-        }
-    }
+    displayAliens();
 
     var width = shipSprite.width * aliens[0].width / alienSprite[rowPattern[0]][0].width;
     width *= 1.5;
     var height = shipSprite.height / shipSprite.width * width;
-    ship = new Ship(shipSprite, 0, board.height * 0.95, width, height);
+    ship = new Ship(shipSprite, 0, board.height * 0.95, width, height, 3);
 
     bullets = [];
 };
@@ -120,9 +117,9 @@ function update() {
     ship.x = Math.min(ship.x, board.width - ship.width);
     ship.x = Math.max(ship.x, 0);
 
-    if (input.isPressed(32)) { // Space key
+    if (input.isPressed(32)) { // Space key     isPressed
         if(ship.alive){
-            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -1));
+            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, "#fff", -1));
         }
     }
 
@@ -149,12 +146,16 @@ function update() {
                 aliensMove(aliens, "x", dir);
                 break;
             }
+
+            if(alien.y + alien.height >= board.height*0.9){
+                ship.kill(10000);
+            }
         }
     }
 
     if(Math.random() < 0.05 && aliens.length > 0){
         var s = Math.floor(Math.random()*aliens.length);
-        bullets.push(new Bullet(aliens[s].x + aliens[s].width/2, aliens[s].y + aliens[s].height, 1));
+        bullets.push(new Bullet(aliens[s].x + aliens[s].width/2, aliens[s].y + aliens[s].height, "#fff", 1));
     }
 
 
@@ -162,28 +163,45 @@ function update() {
 
 function render() {
     board.clear();
-
-    for (var i = 0; i < aliens.length; i++) {
-        var alien = aliens[i];
-        if(alien.alive){
-            board.drawAlien(alien, spriteVersion);
-        }else{
-            aliens.splice(i, 1);
-            i--;
-            moveFreq == Math.max(1, moveFreq--);
-        }
-    }
+    board.gameInfo(ship);
 
     if(ship.alive){
-        board.drawShip(ship);
+        board.gameOverLine();
+
+        if(aliens.length <= 0){
+            displayAliens();
+            ship.newWave();
+        }
+
+        for (var i = 0; i < aliens.length; i++) {
+            var alien = aliens[i];
+            if(alien.alive){
+                board.drawAlien(alien, spriteVersion);
+            }else{
+                aliens.splice(i, 1);
+                i--;
+                moveFreq--;
+                if(moveFreq <= 1){
+                    moveFreq = 1;
+                }
+            }
+        }
+
+        if(ship.alive){
+            board.drawShip(ship);
+        }
+
+        for (var i = 0; i < bullets.length; i++) {
+            var bullet = bullets[i];
+            if(bullet.alive){
+                board.drawBullet(bullet);
+            }
+        }
+    }else{
+        bullets = [];
+        board.gameOver();
     }
 
-    for (var i = 0; i < bullets.length; i++) {
-        var bullet = bullets[i];
-        if(bullet.alive){
-            board.drawBullet(bullet);
-        }
-    }
 };
 
 main();
