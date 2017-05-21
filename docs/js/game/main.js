@@ -39,10 +39,15 @@ if (window.DeviceOrientationEvent) {
 if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
     // Touch events are supported
     window.addEventListener("touchstart", function(event) {
+        event.preventDefault();
+
         if(ship.alive){
-            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -1));
+            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, "#33FF00", -1));
+        }else{
+            board.clear();
+            init();
         }
-    }, false)
+    }, false);
 }
 
 function main() {
@@ -72,6 +77,8 @@ function init() {
     frames  = 0;
     moveFreqInit = 60;   //60
     moveFreq = moveFreqInit;
+    shootFreqInit = 1;  // 0.03
+    shootFreq = shootFreqInit;
     spriteVersion = 0;
 
     rowPattern = [1, 0, 0, 2, 2];
@@ -90,7 +97,7 @@ function init() {
     var width = shipSprite.width * aliens[0].width / alienSprite[rowPattern[0]][0].width;
     width *= 1.5;
     var height = shipSprite.height / shipSprite.width * width;
-    ship = new Ship(shipSprite, 0, board.height * 0.95, width, height, 3);
+    ship = new Ship(shipSprite, board.width*0.5, board.height * 0.95, width, height, 3);
 
     bullets = [];
 };
@@ -119,8 +126,13 @@ function update() {
 
     if (input.isPressed(32)) { // Space key     isPressed
         if(ship.alive){
-            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, "#fff", -1));
+            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, "#33FF00", -1));
         }
+    }
+
+    if(input.isDown(82)) { // R key
+        board.clear();
+        init();
     }
 
     for (var i = 0; i < bullets.length; i++) {
@@ -153,11 +165,10 @@ function update() {
         }
     }
 
-    if(Math.random() < 0.05 && aliens.length > 0){
+    if(Math.random() < shootFreq && aliens.length > 0){
         var s = Math.floor(Math.random()*aliens.length);
         bullets.push(new Bullet(aliens[s].x + aliens[s].width/2, aliens[s].y + aliens[s].height, "#fff", 1));
     }
-
 
 };
 
@@ -169,6 +180,7 @@ function render() {
         board.gameOverLine();
 
         if(aliens.length <= 0){
+            shootFreq += 0.02;
             displayAliens();
             ship.newWave();
         }
@@ -187,9 +199,7 @@ function render() {
             }
         }
 
-        if(ship.alive){
-            board.drawShip(ship);
-        }
+        board.drawShip(ship);
 
         for (var i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];

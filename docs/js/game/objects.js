@@ -93,6 +93,22 @@ Board.prototype.gameOver = function(){
     this.ctx.textAlign = "center";
     this.ctx.strokeStyle = "#33FF00";
     this.ctx.strokeText("Game Over", this.width*0.5, this.height*0.5);
+
+    var msg;
+    /*
+    The following 5 lines code was adapted from a post at:
+    http://stackoverflow.com/questions/3514784/what-is-the-best-way-to-detect-a-mobile-device-in-jquery
+    Accessed: 2017-05-21
+    */
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        msg = "To restart, touch the screen";
+    }else{
+        msg = "To restart, press R";
+    }
+
+    fontSize = this.height*0.05 + "px Arial";
+    this.ctx.font = fontSize;
+    this.ctx.fillText(msg, this.width*0.5, this.height*0.7);
 }
 
 Board.prototype.gameOverLine = function(){
@@ -210,6 +226,7 @@ Bullet.prototype.checkHit = function(aliens, ship){
 };
 
 function displayAliens(){
+    moveFreqInit--;
     moveFreq = moveFreqInit;
     for (var i = 0; i < rowPattern.length; i++) {
         var alienType = rowPattern[i];
