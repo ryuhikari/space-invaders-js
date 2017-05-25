@@ -6,6 +6,22 @@
 
     <title>Space Invaders</title>
 
+    <!-- for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Dice Game">
+    <meta name="theme-color" content="#519430">
+    <link rel="icon" sizes="266X266" href="img/logo.png">
+
+    <!-- for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Dice Game">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#519430">
+    <link rel="apple-touch-icon" href="img/logo.png">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <!-- W3.CSS Framework -->
     <link rel="stylesheet" href="css/w3/w3.css">
     <link rel="stylesheet" href="css/w3/w3-theme.css">
@@ -28,8 +44,8 @@
 
             <a href="#top" class="smooth w3-bar-item w3-button">Home</a>
             <a href="#instruction-section" class="smooth w3-bar-item w3-button">Instructions</a>
-            <a href="#score-section" class="smooth w3-bar-item w3-button">Scores</a>
-            <a href="#map-section" class="smooth w3-bar-item w3-button">Location</a>
+            <a href="#top-score-section" class="smooth w3-bar-item w3-button">Top Scores</a>
+            <a href="#user-score-section" class="smooth w3-bar-item w3-button">Your Scores</a>
             <a href="game.html" class="smooth w3-bar-item w3-button">Play</a>
         </nav>
 
@@ -40,8 +56,8 @@
                 <a id="page-title-nav" href="#top" class="smooth w3-bar-item w3-button">Space Invaders</a>
                 <a href="#top" class="smooth w3-bar-item w3-button w3-hide-small">Home</a>
                 <a href="#instruction-section" class="smooth w3-bar-item w3-button w3-hide-small">Instructions</a>
-                <a href="#score-section" class="smooth w3-bar-item w3-button w3-hide-small">Scores</a>
-                <a href="#map-section" class="smooth w3-bar-item w3-button w3-hide-small">Location</a>
+                <a href="#top-score-section" class="smooth w3-bar-item w3-button w3-hide-small">Top Scores</a>
+                <a href="#user-score-section" class="smooth w3-bar-item w3-button w3-hide-small">Your Scores</a>
                 <a href="game.html" class="smooth w3-bar-item w3-button w3-hide-small">Play</a>
                 <!-- Open navigation sidebar -->
                 <a href="#" id="open-nav-sidebar" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium">&#9776;</a>
@@ -56,57 +72,62 @@
             <h1 id="page-title">Space Invaders</h1>
         </div>
 
-        <div id="instruction-section" class="w3-container w3-padding">
+        <section id="instruction-section" class="w3-container w3-padding">
             <h2>Instructions</h2>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa ipsum ab repellendus animi reiciendis, aliquid tempore explicabo voluptas quis libero quas magni similique, eos, sequi velit! Perspiciatis accusamus repellendus saepe.
-        </div><!-- /instruction-section -->
+        </section><!-- /instruction-section -->
 
-        <div id="score-section" class="w3-container w3-padding">
-            <h2>Scores</h2>
-            <table class="w3-table-all w3-hoverable w3-centered">
+        <section id="top-score-section" class="w3-container w3-padding">
+            <h2>Top Scores</h2>
+            <table id="top-score-table" class="w3-table-all w3-hoverable w3-centered">
                 <thead>
                     <tr class="w3-light-grey">
-                        <td>Nickname</td>
+                        <td>Position</td>
+                        <td>Name</td>
                         <td>Score</td>
-                        <td>Location</td>
+                        <td>Date</td>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Kristina</td>
-                        <td>1000</td>
-                        <td>Jönköping</td>
-                    </tr>
-                    <tr>
-                        <td>Kristina</td>
-                        <td>1000</td>
-                        <td>Jönköping</td>
-                    </tr>
-                    <tr>
-                        <td>Kristina</td>
-                        <td>1000</td>
-                        <td>Jönköping</td>
-                    </tr>
-                    <tr>
-                        <td>Kristina</td>
-                        <td>1000</td>
-                        <td>Jönköping</td>
-                    </tr>
-                    <tr>
-                        <td>Kristina</td>
-                        <td>1000</td>
-                        <td>Jönköping</td>
+                <tbody id="top-score-table-body">
+                    <tr w3-repeat="scores">
+                        <td>{{position}}</td>
+                        <td>{{name}}</td>
+                        <td>{{score}}</td>
+                        <td>{{createdAt}}</td>
                     </tr>
                 </tbody>
             </table>
-        </div><!-- /score-section -->
+        </section><!-- /top-score-section -->
 
-        <div id="map-section" class="w3-container w3-padding">
-            <h2>Location</h2>
-            <button id="show-location-button" class="w3-margin-bottom" type="button">Show location</button>
-            <div id="map-errors" class="w3-container w3-margin-bottom w3-padding w3-red"></div>
-            <div id="map" class="w3-container w3-margin-bottom"></div>
-        </div><!-- /map-section -->
+        <section id="user-score-section" class="w3-container w3-padding">
+            <h2>Your Scores</h2>
+            <form id="get-user-scores-form" class="w3-container w3-margin-bottom">
+                <p>
+                    <input type="text" name="name" class="w3-input w3-border" placeholder="Insert your name to get the scores">
+                </p>
+                <p>
+                    <button id="get-user-scores-button" type="submit" class="w3-btn w3-padding w3-theme-d5">Send &nbsp; ❯</button>
+                </p>
+            </form>
+            <table id="user-score-table" class="w3-table-all w3-hoverable w3-centered">
+                <thead>
+                    <tr class="w3-light-grey">
+                        <td>Position</td>
+                        <td>Name</td>
+                        <td>Score</td>
+                        <td>Date</td>
+                    </tr>
+                </thead>
+                <tbody id="user-score-table-body">
+                    <tr w3-repeat="scores">
+                        <td>{{position}}</td>
+                        <td>{{name}}</td>
+                        <td>{{score}}</td>
+                        <td>{{createdAt}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section><!-- /user-score-section -->
     </main>
 
     <footer class="w3-theme-d2 w3-small w3-center w3-margin-top">
@@ -119,25 +140,31 @@
 
     <div id="show-info-modal" class="w3-modal w3-animate-opacity">
         <div class="w3-modal-content w3-card-4">
-            <header id="show-info-modal__header" class="w3-container w3-theme">
-                <span class="close-panel w3-button w3-large w3-display-topright" data-close="show-info-modal">&times;</span>
-                <h2 id="show-info-modal__title">Page info</h2>
+            <header id="show-info-modal__header" class="w3-container w3-green">
+                <span class="close-panel w3-button w3-large w3-display-topright" data-close="#show-info-modal">&times;</span>
+                <h2 id="show-info-modal__title">Server info</h2>
             </header>
             <div id="show-info-modal__content" class="w3-container">
-                <p w3-repeat="info">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium quod soluta, suscipit eos alias, voluptas tempore at doloribus error accusantium eius, sequi ratione officiis tenetur, incidunt nam temporibus dolore dignissimos.
-                </p>
+                <p w3-repeat="info">{{}}</p>
             </div>
-            <footer id="show-info-modal__footer w3-theme" class="w3-container w3-green"></footer>
+            <footer id="show-info-modal__footer" class="w3-container w3-green">
+                <p>Space Invaders</p>
+            </footer>
         </div>
     </div>
 
     <!-- jQuery -->
     <script src="js/jquery-3.2.1.min.js" charset="utf-8"></script>
 
+    <!-- W3 Data -->
+    <script src="js/w3data.js" charset="utf-8"></script>
+
+    <!-- Moment -->
+    <script src="js/moment.min.js" charset="utf-8"></script>
+
     <!-- Page scripts -->
+    <script src="js/server.js" charset="utf-8"></script>
     <script src="js/gui.js" charset="utf-8"></script>
-    <script src="js/location/location.js" charset="utf-8"></script>
     <script src="js/main.js" charset="utf-8"></script>
 </body>
 </html>
