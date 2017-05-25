@@ -1,10 +1,5 @@
 /* Navigation
 ============================================================================= */
-#navigation a,
-#nav-sidebar a {
-    font-size: 0.85em;
-}
-
 #nav-sidebar {
     width: 100%;
     display: none;
