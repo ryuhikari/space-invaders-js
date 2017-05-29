@@ -148,6 +148,17 @@
     var topScoreTable = $("#top-score-table");
     topScoreTable.hide();
     function renderTopScores(scores) {
+        if (!scores) {
+            topScoreTable.hide();
+            showInfo(["Problem getting scores"], "topScores", false);
+            return;
+        }
+
+        if (scores.scores.length === 0) {
+            topScoreTable.hide();
+            return;
+        }
+
         if (scores.scores.length > 0) {
             topScoreTable.show();
             scores.scores.forEach(function(score, index) {
@@ -156,15 +167,24 @@
                 score.position = index + 1;
             });
             w3DisplayData("top-score-table-body", scores);
-        } else {
-            showInfo(['Problem getting top scores.'], 'topScores', undefined);
-            topScoreTable.hide();
+            return;
         }
     }
 
     var userScoreTable = $("#user-score-table");
     userScoreTable.hide();
     function renderUserScores(scores) {
+        if (!scores) {
+            userScoreTable.hide();
+            showInfo(["Problem getting scores"], "userScores", false);
+            return;
+        }
+
+        if (scores.scores.length === 0) {
+            userScoreTable.hide();
+            return;
+        }
+
         if (scores.scores.length > 0) {
             userScoreTable.show();
             scores.scores.forEach(function(score, index) {
@@ -173,9 +193,7 @@
                 score.position = index + 1;
             });
             w3DisplayData("user-score-table-body", scores);
-        } else {
-            showInfo(['Problem getting user scores or that user does not exist.'], 'userScores', undefined);
-            userScoreTable.hide();
+            return;
         }
     }
 

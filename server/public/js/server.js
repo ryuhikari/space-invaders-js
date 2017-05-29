@@ -1,4 +1,4 @@
-var serverURL = "https://serene-caverns-32800.herokuapp.com/api"
+var serverURL = "https://infinite-lands-38583-spaceinv.herokuapp.com/api"
 
 function getTopScores(callback) {
     $.ajax({

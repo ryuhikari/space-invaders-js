@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>Space Invaders</title>
 
@@ -10,7 +11,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Space Invaders">
     <meta name="theme-color" content="#303030">
-    <link rel="icon" sizes="266X266" href="img/logo.png">
+    <link rel="icon" sizes="385x166" href="img/logo.png">
 
     <!-- for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -98,7 +99,7 @@
                     </tr>
                 </thead>
                 <tbody id="top-score-table-body">
-                    <tr w3-repeat="scores">
+                    <tr data-repeat="scores">
                         <td>{{position}}</td>
                         <td>{{name}}</td>
                         <td>{{score}}</td>
@@ -128,7 +129,7 @@
                     </tr>
                 </thead>
                 <tbody id="user-score-table-body">
-                    <tr w3-repeat="scores">
+                    <tr data-repeat="scores">
                         <td>{{position}}</td>
                         <td>{{name}}</td>
                         <td>{{score}}</td>
@@ -154,7 +155,7 @@
                 <h2 id="show-info-modal__title">Server info</h2>
             </header>
             <div id="show-info-modal__content" class="w3-container">
-                <p w3-repeat="info">{{}}</p>
+                <p data-repeat="info">{{}}</p>
             </div>
             <footer id="show-info-modal__footer" class="w3-container w3-green">
                 <p>Space Invaders</p>
