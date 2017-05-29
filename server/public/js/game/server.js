@@ -4,6 +4,9 @@ function uploadScore(score) {
     var name = prompt("You got " + score + ". Write a username to upload to the server.");
     if (name) {
         addUserScore(score, name, processAddUserScore);
+        return true;
+    } else {
+        return false;
     }
 }
 

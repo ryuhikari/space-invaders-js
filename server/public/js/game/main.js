@@ -27,7 +27,11 @@ if (window.DeviceOrientationEvent) {
   // Listen for the event and handle DeviceOrientationEvent object
   window.addEventListener('deviceorientation', function(eventData) {
     // gamma is the left-to-right tilt in degrees, where right is positive
-    var tiltLR = eventData.gamma;
+    if (screen.orientation.angle === 90 || screen.orientation.angle === 270) {
+        var tiltLR = eventData.beta;
+    } else {
+        var tiltLR = eventData.gamma;
+    }
     var aux = Math.max(tiltLR, -30);
     aux = Math.min(tiltLR, 30);
     aux = aux * 100 / 30 / 100;
