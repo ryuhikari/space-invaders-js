@@ -47,9 +47,9 @@
 
     /**
      * Modal to show different info messages
-     * @param  {string array}   errors String array with all the errors to show
-     * @param  {string}         type   Type of info to choose in the switch-case
-     * @param  {string array}   data   String array with all the data to show
+     * @param {string[]} errors - String array with all the errors to show
+     * @param {string[]} type   - Type of info to choose in the switch-case
+     * @param {string[]} data   - String array with all the data to show
      */
     function showInfo(errors, type, data) {
         // Get all DOM elements
@@ -129,8 +129,8 @@
     topScoreTable.hide();
     /**
      * Show scores on the table
-     * @param  {object array} scores Each object has name,
-     *                               score and createdAt properties
+     * @param  {Object[]} scores - Each object has name,
+     *                             score and createdAt properties
      */
     function renderTopScores(scores) {
         // If server do not return scores an info message is shown
@@ -171,8 +171,8 @@
     userScoreTable.hide();
     /**
      * Show scores on the table
-     * @param  {object array} scores Each object has name,
-     *                               score and createdAt properties
+     * @param  {Object[]} scores - Each object has name,
+     *                             score and createdAt properties
      */
     function renderUserScores(scores) {
         // If server do not return scores an info message is shown

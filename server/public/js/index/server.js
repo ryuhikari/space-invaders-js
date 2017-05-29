@@ -8,7 +8,7 @@
 
     /**
      * Get top scores
-     * @param  {Function} callback Function to get called after getting the scores
+     * @param  {Function} callback - Function to get called after getting the scores
      */
     function getTopScores(callback) {
         $.ajax({
@@ -27,7 +27,7 @@
 
     /**
      * Get user scores
-     * @param  {Function} callback Function to get called after getting the scores
+     * @param  {Function} callback - Function to get called after getting the scores
      */
     function getUserScores(name, callback) {
         $.ajax({
