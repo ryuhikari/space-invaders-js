@@ -2,7 +2,9 @@ var serverURL = "https://infinite-lands-38583-spaceinv.herokuapp.com/api"
 
 function uploadScore(score) {
     var name = prompt("You got " + score + ". Write a username to upload to the server.");
-    addUserScore(score, name, processAddUserScore);
+    if (name) {
+        addUserScore(score, name, processAddUserScore);
+    }
 }
 
 function processAddUserScore(response) {
