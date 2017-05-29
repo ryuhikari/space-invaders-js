@@ -1,3 +1,28 @@
+var
+
+board,
+input,
+frames,
+moveFreq,
+moveFreqInit,
+
+rowPattern,
+alienScore,
+numAlienColumns,
+columnWidth,
+
+alienSprite,
+shipSprite,
+citySprite,
+spriteVersion,
+maxSpriteWidth,
+
+aliens,
+dir,
+ship,
+bullets,
+cities;
+
 if (window.DeviceOrientationEvent) {
   // Listen for the event and handle DeviceOrientationEvent object
   window.addEventListener('deviceorientation', function(eventData) {
@@ -14,32 +39,16 @@ if (window.DeviceOrientationEvent) {
 if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
     // Touch events are supported
     window.addEventListener("touchstart", function(event) {
-        bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -8, 2, 6, "#fff"));
-    }, false)
+        event.preventDefault();
+
+        if(ship.alive){
+            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, "#33FF00", -1));
+        }else{
+            board.clear();
+            init();
+        }
+    }, false);
 }
-
-var
-
-board,
-input,
-frames,
-moveFreq,
-
-rowPattern,
-numAlienColumns,
-columnWidth,
-
-alienSprite,
-shipSprite,
-citySprite,
-spriteVersion,
-maxSpriteWidth,
-
-aliens,
-dir,
-ship,
-bullets,
-cities;
 
 function main() {
     board = new Board("canvas-container", 224, 256);
@@ -66,10 +75,14 @@ function main() {
 
 function init() {
     frames  = 0;
-    moveFreq = 60;
+    moveFreqInit = 60;   //60
+    moveFreq = moveFreqInit;
+    shootFreqInit = 1;  // 0.03
+    shootFreq = shootFreqInit;
     spriteVersion = 0;
 
     rowPattern = [1, 0, 0, 2, 2];
+    alienScore = [300, 200, 200, 100, 100];
     numAlienColumns = 11;
     maxSpriteWidth = "110";
 
@@ -79,21 +92,12 @@ function init() {
     dir = columnWidth;
 
     aliens = [];
-    for (var i = 0; i < rowPattern.length; i++) {
-        var alienType = rowPattern[i];
-        var alien = alienSprite[alienType];
-        var width = alien[0].width * columnWidth * 2 / maxSpriteWidth;
-        var height = alien[0].height / alien[0].width * width;
-        var offsetColumn = (columnWidth * 2 - width)*0.5;
-        for (var j = 0; j < numAlienColumns; j++) {
-            aliens.push(new Alien(alien, (columnWidth*3)*j, board.height*0.1 + (height*1.5)*i, offsetColumn, width, height));
-        }
-    }
+    displayAliens();
 
     var width = shipSprite.width * aliens[0].width / alienSprite[rowPattern[0]][0].width;
     width *= 1.5;
     var height = shipSprite.height / shipSprite.width * width;
-    ship = new Ship(shipSprite, 0, board.height * 0.95, width, height);
+    ship = new Ship(shipSprite, board.width*0.5, board.height * 0.95, width, height, 3);
 
     bullets = [];
 };
@@ -120,13 +124,25 @@ function update() {
     ship.x = Math.min(ship.x, board.width - ship.width);
     ship.x = Math.max(ship.x, 0);
 
-    if (input.isPressed(32)) { // Space key
-        bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, -8, 2, 6, "#fff"));
+    if (input.isPressed(32)) { // Space key     isPressed
+        if(ship.alive){
+            bullets.push(new Bullet(ship.x + ship.width / 2, ship.y, "#33FF00", -1));
+        }
+    }
+
+    if(input.isDown(82)) { // R key
+        board.clear();
+        init();
     }
 
     for (var i = 0; i < bullets.length; i++) {
         var bullet = bullets[i];
+        if(!bullet.alive){
+            bullets.splice(i, 1);
+            i--;
+        }
         bullet.move();
+        bullet.checkHit(aliens, ship);
     }
 
     if (frames % moveFreq === 0) {
@@ -142,23 +158,60 @@ function update() {
                 aliensMove(aliens, "x", dir);
                 break;
             }
+
+            if(alien.y + alien.height >= board.height*0.9){
+                ship.kill(10000);
+            }
         }
     }
+
+    if(Math.random() < shootFreq && aliens.length > 0){
+        var s = Math.floor(Math.random()*aliens.length);
+        bullets.push(new Bullet(aliens[s].x + aliens[s].width/2, aliens[s].y + aliens[s].height, "#fff", 1));
+    }
+
 };
 
 function render() {
     board.clear();
-    for (var i = 0; i < aliens.length; i++) {
-        var alien = aliens[i];
-        board.drawAlien(alien, spriteVersion);
+    board.gameInfo(ship);
+
+    if(ship.alive){
+        board.gameOverLine();
+
+        if(aliens.length <= 0){
+            shootFreq += 0.02;
+            displayAliens();
+            ship.newWave();
+        }
+
+        for (var i = 0; i < aliens.length; i++) {
+            var alien = aliens[i];
+            if(alien.alive){
+                board.drawAlien(alien, spriteVersion);
+            }else{
+                aliens.splice(i, 1);
+                i--;
+                moveFreq--;
+                if(moveFreq <= 1){
+                    moveFreq = 1;
+                }
+            }
+        }
+
+        board.drawShip(ship);
+
+        for (var i = 0; i < bullets.length; i++) {
+            var bullet = bullets[i];
+            if(bullet.alive){
+                board.drawBullet(bullet);
+            }
+        }
+    }else{
+        bullets = [];
+        board.gameOver();
     }
 
-    board.drawShip(ship)
-
-    for (var i = 0; i < bullets.length; i++) {
-        var bullet = bullets[i];
-        board.drawBullet(bullet);
-    }
 };
 
 main();
