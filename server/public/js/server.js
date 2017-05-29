@@ -30,26 +30,26 @@ function getUserScores(name, callback) {
     });
 }
 
-function addUserScores(score, name, callback) {
+function addUserScore(score, name, callback) {
     var newScore = {
         score: score,
         name: name
     };
+    console.log(newScore);
     $.ajax({
         method: "POST",
         url: serverURL + "/scores",
-        dataType: 'jsonp',
-        jsonp: "callback",
+        contentType: "application/json",
         data: JSON.stringify(newScore),
         success: function(response) {
+            console.log(response);
             callback(response);
         },
         error: function(response) {
+            console.log(response);
             callback(false);
         }
     });
 }
 function testScore(response) {
-    console.log(response);
 }
-addUserScores(300, "Baboon", testScore);

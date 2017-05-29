@@ -32,7 +32,7 @@ app.post('/api/scores', (req, res) => {
     });
 });
 
-app.get('/api/scores', (req, res) => {
+app.get('/api/scores', enableCORS, (req, res) => {
     Score.find({}).sort({score: -1}).then((scores) => {
         res.jsonp({scores});
     }, (e) => {
