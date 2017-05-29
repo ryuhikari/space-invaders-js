@@ -1,0 +1,12 @@
+{
+    "test": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/ScoreAppTest",
+        "JWT_SECRET": "wqdftrhe34fk543kjhe32nekll2od32l"
+    },
+    "development": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/ScoreApp",
+        "JWT_SECRET": "dsfds8ffdsif3454lkmlklk2lm32l32o"
+    }
+}
