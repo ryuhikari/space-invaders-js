@@ -19,7 +19,7 @@ app.set('json spaces', 2);
 app.use(bodyParser.json());
 app.use(express.static(publicPath));
 
-app.post('/api/scores', (req, res) => {
+app.post('/api/scores', enableCORS, (req, res) => {
     var score = new Score({
         name: req.body.name,
         score: req.body.score
@@ -48,7 +48,7 @@ app.get('/api/scores/top', enableCORS, (req, res) => {
     });
 });
 
-app.get('/api/scores/:name', (req, res) => {
+app.get('/api/scores/:name', enableCORS, (req, res) => {
     var name = req.params.name;
 
     Score.find({name}).then((scores) => {
