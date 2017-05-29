@@ -18,7 +18,6 @@ function addUserScore(score, name, callback) {
         score: score,
         name: name
     };
-    console.log(newScore);
     $.ajax({
         method: "POST",
         url: serverURL + "/scores",
