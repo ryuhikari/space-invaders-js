@@ -1,21 +1,28 @@
+/**
+ * GUI module
+ */
 ;var GUI = (function($) {
-    var showLoggedInElements = $(".show-logged-in");
-    var showLoggedOutElements = $(".show-logged-out");
-
-    function showLoggedIn() {
-        showLoggedInElements.show();
-        showLoggedOutElements.hide();
-    }
-    function showLoggedOut() {
-        showLoggedInElements.hide();
-        showLoggedOutElements.show();
-    }
-    showLoggedOut();
-
-    // Navigation
+    /**
+     * Navigation
+     */
     var navigation = $("#navigation");
     var navigationSidebar = $("#nav-sidebar");
 
+    /**
+     * Hide and show navigation sidebar
+     */
+    function openNav() {
+        navigation.hide();
+        navigationSidebar.show();
+    }
+    function closeNav() {
+        navigation.show();
+        navigationSidebar.hide();
+    }
+
+    /**
+     * Events to open and close navigation sidebar
+     */
     $("#open-nav-sidebar").on("click", function(event) {
         event.preventDefault();
         openNav();
@@ -28,16 +35,9 @@
         closeNav();
     })
 
-    function openNav() {
-        navigation.hide();
-        navigationSidebar.show();
-    }
-    function closeNav() {
-        navigation.show();
-        navigationSidebar.hide();
-    }
-
-    // Panels
+    /**
+     * X button to close the element in the data-close attribute
+     */
     $(".close-panel").on("click", function(event) {
         event.preventDefault();
         var closeElement = $(this).attr("data-close");
@@ -45,47 +45,21 @@
         closeElement.hide();
     });
 
-    // Errors
-    var errorsPanels = {
-        signUp: $("#sign-up-errors-panel"),
-    };
-    var errorsLists = {
-        signUp: $("#sign-up-errors-list"),
-    };
-
-    function renderErrors(errors, errorType) {
-        if (!errorType) {
-            Object.keys(errorsPanels).forEach(function(key) {
-                errorsPanels[key].hide();
-            });
-            return;
-        }
-        switch (errorType) {
-            case "sign-up":
-                if (errors) {
-                    var HTMLid = errorsLists.signUp.attr('id');
-                    w3DisplayData(HTMLid, {errors: errors});
-                    errorsPanels.signUp.show();
-                } else {
-                    errorsPanels.signUp.hide();
-                }
-                break;
-            default:
-                Object.keys(errorsPanels).forEach(function(key) {
-                    errorsPanels[key].hide();
-                });
-        }
-    }
-    renderErrors();
-
-    // Info messages
+    /**
+     * Modal to show different info messages
+     * @param  {string array}   errors String array with all the errors to show
+     * @param  {string}         type   Type of info to choose in the switch-case
+     * @param  {string array}   data   String array with all the data to show
+     */
     function showInfo(errors, type, data) {
+        // Get all DOM elements
         var modal = $("#show-info-modal");
         var modalHeader = $("#show-info-modal__header");
         var modalTitle = $("#show-info-modal__title");
         var modalContent = $("#show-info-modal__content");
         var modalFooter = $("#show-info-modal__footer");
 
+        // Select the title based on type variable
         switch (type) {
             case "topScores":
                 modalTitle.html("Top scores information");
@@ -98,6 +72,7 @@
                 return;
         }
 
+        // Change color green or red if it is an error or not
         if (errors) {
             w3DisplayData("show-info-modal__content", {info: errors});
 
@@ -110,6 +85,7 @@
             modalFooter.removeClass("info-error");
         }
 
+        // Show the final configuration
         modal.show();
     }
     showInfo();
@@ -145,58 +121,93 @@
         } // End if
     });
 
+    /**
+     * Top score table
+     */
     var topScoreTable = $("#top-score-table");
+    // Hide table by default
     topScoreTable.hide();
+    /**
+     * Show scores on the table
+     * @param  {object array} scores Each object has name,
+     *                               score and createdAt properties
+     */
     function renderTopScores(scores) {
+        // If server do not return scores an info message is shown
         if (!scores) {
             topScoreTable.hide();
             showInfo(["Problem getting scores"], "topScores", false);
             return;
         }
 
+        // If there is no scores to show, the table is hidden
         if (scores.scores.length === 0) {
             topScoreTable.hide();
             return;
         }
 
+        // Render scores
         if (scores.scores.length > 0) {
             topScoreTable.show();
+            // Transform timestamp into a readable date format
+            // and get the position of each element
             scores.scores.forEach(function(score, index) {
                 var date = moment(score.createdAt).format("YYYY-MM-DD");
                 score.createdAt = date;
                 score.position = index + 1;
             });
+
+            // Show the scores on the table
             w3DisplayData("top-score-table-body", scores);
             return;
         }
     }
 
+    /**
+     * User score table
+     */
     var userScoreTable = $("#user-score-table");
+    // Hide table by default
     userScoreTable.hide();
+    /**
+     * Show scores on the table
+     * @param  {object array} scores Each object has name,
+     *                               score and createdAt properties
+     */
     function renderUserScores(scores) {
+        // If server do not return scores an info message is shown
         if (!scores) {
             userScoreTable.hide();
             showInfo(["Problem getting scores"], "userScores", false);
             return;
         }
 
+        // If there is no scores to show, the table is hidden
         if (scores.scores.length === 0) {
             userScoreTable.hide();
             return;
         }
 
+        // Render scores
         if (scores.scores.length > 0) {
             userScoreTable.show();
+            // Transform timestamp into a readable date format
+            // and get the position of each element
             scores.scores.forEach(function(score, index) {
                 var date = moment(score.createdAt).format("YYYY-MM-DD");
                 score.createdAt = date;
                 score.position = index + 1;
             });
+
+            // Show the scores on the table
             w3DisplayData("user-score-table-body", scores);
             return;
         }
     }
 
+    /**
+     * Export all the functions and variables that should be public and accessible
+     */
     return {
         renderTopScores: renderTopScores,
         renderUserScores: renderUserScores
