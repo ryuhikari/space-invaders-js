@@ -26,7 +26,7 @@ app.post('/api/scores', (req, res) => {
     });
 
     score.save().then((doc) => {
-        res.send(doc);
+        res.jsonp(doc);
     }, (e) => {
         res.status(400).send(e);
     });

@@ -29,3 +29,27 @@ function getUserScores(name, callback) {
         }
     });
 }
+
+function addUserScores(score, name, callback) {
+    var newScore = {
+        score: score,
+        name: name
+    };
+    $.ajax({
+        method: "POST",
+        url: serverURL + "/scores",
+        dataType: 'jsonp',
+        jsonp: "callback",
+        data: JSON.stringify(newScore),
+        success: function(response) {
+            callback(response);
+        },
+        error: function(response) {
+            callback(false);
+        }
+    });
+}
+function testScore(response) {
+    console.log(response);
+}
+addUserScores(300, "Baboon", testScore);

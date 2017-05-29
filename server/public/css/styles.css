@@ -50,6 +50,11 @@ section h2 {
     font-weight: bold;
 }
 
+.table-container {
+    max-height: 500px;
+    overflow: auto;
+}
+
 #score-table thead {
     font-weight: bold;
 }

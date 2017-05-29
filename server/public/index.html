@@ -83,59 +83,78 @@
 
         <section id="instruction-section" class="w3-container w3-padding">
             <h2>Instructions</h2>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa ipsum ab repellendus animi reiciendis, aliquid tempore explicabo voluptas quis libero quas magni similique, eos, sequi velit! Perspiciatis accusamus repellendus saepe.
+            <h3>Desktop</h3>
+            <p>
+                Movement: arrows left | right
+                </br>
+                Shoot: spacebar
+            </p>
+            <h3>Phone</h3>
+            <p>
+                Movement: tilt the phone left | right
+                </br>
+                Shoot: touch the screen
+            </p>
+
         </section><!-- /instruction-section -->
 
         <section id="top-score-section" class="w3-container w3-padding">
             <h2>Top Scores</h2>
-            <table id="top-score-table" class="w3-table-all w3-hoverable w3-centered">
-                <thead>
-                    <tr class="w3-light-grey">
-                        <td>Position</td>
-                        <td>Name</td>
-                        <td>Score</td>
-                        <td>Date</td>
-                    </tr>
-                </thead>
-                <tbody id="top-score-table-body">
-                    <tr data-repeat="scores">
-                        <td>{{position}}</td>
-                        <td>{{name}}</td>
-                        <td>{{score}}</td>
-                        <td>{{createdAt}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container w3-responsive">
+                <table id="top-score-table" class="w3-table-all w3-hoverable w3-centered">
+                    <thead>
+                        <tr class="w3-light-grey">
+                            <td>Position</td>
+                            <td>Name</td>
+                            <td>Score</td>
+                            <td>Date</td>
+                        </tr>
+                    </thead>
+                    <tbody id="top-score-table-body">
+                        <tr data-repeat="scores">
+                            <td>{{position}}</td>
+                            <td>{{name}}</td>
+                            <td>{{score}}</td>
+                            <td>{{createdAt}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section><!-- /top-score-section -->
 
         <section id="user-score-section" class="w3-container w3-padding">
             <h2>Your Scores</h2>
+            <p>
+                Search scores by username or leave empty to get all users' scores.
+            </p>
             <form id="get-user-scores-form" class="w3-container w3-margin-bottom">
                 <p>
                     <input type="text" name="name" class="w3-input w3-border" placeholder="Insert your name to get the scores">
                 </p>
                 <p>
-                    <button id="get-user-scores-button" type="submit" class="w3-btn w3-padding w3-theme-d5">Send &nbsp; ❯</button>
+                    <button id="get-user-scores-button" type="submit" class="w3-btn w3-padding w3-theme-d5">Search &nbsp; ❯</button>
                 </p>
             </form>
-            <table id="user-score-table" class="w3-table-all w3-hoverable w3-centered">
-                <thead>
-                    <tr class="w3-light-grey">
-                        <td>Position</td>
-                        <td>Name</td>
-                        <td>Score</td>
-                        <td>Date</td>
-                    </tr>
-                </thead>
-                <tbody id="user-score-table-body">
-                    <tr data-repeat="scores">
-                        <td>{{position}}</td>
-                        <td>{{name}}</td>
-                        <td>{{score}}</td>
-                        <td>{{createdAt}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container w3-responsive">
+                <table id="user-score-table" class="w3-table-all w3-hoverable w3-centered">
+                    <thead>
+                        <tr class="w3-light-grey">
+                            <td>Position</td>
+                            <td>Name</td>
+                            <td>Score</td>
+                            <td>Date</td>
+                        </tr>
+                    </thead>
+                    <tbody id="user-score-table-body">
+                        <tr data-repeat="scores">
+                            <td>{{position}}</td>
+                            <td>{{name}}</td>
+                            <td>{{score}}</td>
+                            <td>{{createdAt}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section><!-- /user-score-section -->
     </main>
 
