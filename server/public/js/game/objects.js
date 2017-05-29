@@ -3,11 +3,21 @@ function AABBIntersect(ax, ay, aw, ah, bx, by, bw, bh) {
     return ax < bx+bw && bx < ax+aw && ay < by+bh && by < ay+ah;
 };
 
-// Board
+/**
+ * Canvas object
+ * @param       {string} containerID - Canvas HTML id
+ * @param       {number} width       - Canvas width
+ * @param       {number} height      - Canvas height
+ * @constructor
+ */
 function Board(containerID, width, height) {
+    // save instance reference
     var _this = this;
+
+    // Get container to hold the canvas
     this.container = document.getElementById(containerID);
 
+    // Create canvas and add it to the container
     this.canvas = document.createElement("canvas");
     this.canvas.classList.add("canvas-style");
     this.ctx = this.canvas.getContext("2d");
@@ -17,14 +27,20 @@ function Board(containerID, width, height) {
     this.height = height;
     this.ratio = this.width / this.height;
 
+    // Response to resize events
     window.addEventListener("resize", function() {
         _this.resize(_this);
     });
+    // Response to orientationchange events
     window.addEventListener("orientationchange", function() {
         _this.resize(_this);
     });
 };
 
+/**
+ * Resize canvas to use all available space preserving aspect ratio
+ * @param  {Object} instance - Canvas reference
+ */
 Board.prototype.resize = function (instance) {
     // Body
     document.body.style.height = window.innerHeight + "px";
@@ -33,6 +49,7 @@ Board.prototype.resize = function (instance) {
     var containerHeight = instance.container.offsetHeight;
     var containerRatio = containerWidth / containerHeight;
 
+    // Adjust width or height based on aspect ratio
     if (containerRatio >= instance.ratio) {
         instance.width = Math.round(instance.ratio * containerHeight);
         instance.canvas.width = instance.width;
@@ -48,25 +65,44 @@ Board.prototype.resize = function (instance) {
     }
 };
 
+/**
+ * Initialize canvas creation
+ */
 Board.prototype.init = function () {
     this.container.appendChild(this.canvas);
     this.resize(this);
 };
 
+/**
+ * Clear canvas to redraw
+ */
 Board.prototype.clear = function () {
     this.ctx.clearRect(0, 0, this.width, this.height);
 };
 
+/**
+ * Draw enemy alien
+ * @param  {Object} alien     - Enemy alien
+ * @param  {number} alienType - Number to specify which alien to display
+ */
 Board.prototype.drawAlien = function(alien, alienType) {
     var sprite = alien.sprite[alienType];
     this.ctx.drawImage(sprite.img, sprite.x, sprite.y, sprite.width, sprite.height, alien.x + alien.offset, alien.y, alien.width, alien.height);
 };
 
+/**
+ * Draw user cannon on canvas
+ * @param  {Object} ship - Cannon object that holds user info
+ */
 Board.prototype.drawShip = function (ship) {
     var sprite = ship.sprite;
     this.ctx.drawImage(sprite.img, sprite.x, sprite.y, sprite.width, sprite.height, ship.x, ship.y, ship.width, ship.height);
 };
 
+/**
+ * Draw alien and user bullets
+ * @param  {Object} bullet - Bullet to draw
+ */
 Board.prototype.drawBullet = function (bullet) {
     this.ctx.save();
     this.ctx.fillStyle = bullet.color;
@@ -74,6 +110,10 @@ Board.prototype.drawBullet = function (bullet) {
     this.ctx.restore();
 };
 
+/**
+ * Property that holds info to show on canvas
+ * @param  {Object} ship - user cannon
+ */
 Board.prototype.gameInfo = function(ship){
     var fontSize = board.height*0.03 + "px Arial";
     this.ctx.font = fontSize;
@@ -87,6 +127,9 @@ Board.prototype.gameInfo = function(ship){
     this.ctx.fillText(textLives, this.width*0.75, this.height*0.05);
 }
 
+/**
+ * Draw Game Over text on canvas
+ */
 Board.prototype.gameOver = function(){
     var fontSize = this.height*0.15 + "px Arial";
     this.ctx.font = fontSize;
@@ -95,11 +138,11 @@ Board.prototype.gameOver = function(){
     this.ctx.strokeText("Game Over", this.width*0.5, this.height*0.5);
 
     var msg;
-    /*
-    The following 5 lines code was adapted from a post at:
-    http://stackoverflow.com/questions/3514784/what-is-the-best-way-to-detect-a-mobile-device-in-jquery
-    Accessed: 2017-05-21
-    */
+    /**
+     * The following 5 lines code was adapted from a post at:
+     * http://stackoverflow.com/questions/3514784/what-is-the-best-way-to-detect-a-mobile-device-in-jquery
+     * Accessed: 2017-05-21
+     */
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
         msg = "To restart, touch the screen";
     }else{
@@ -111,6 +154,9 @@ Board.prototype.gameOver = function(){
     this.ctx.fillText(msg, this.width*0.5, this.height*0.7);
 }
 
+/**
+ * Draw  a line to show the limit between aliens and ship
+ */
 Board.prototype.gameOverLine = function(){
     this.ctx.beginPath();
     this.ctx.strokeStyle = "#33FF00";
@@ -119,7 +165,15 @@ Board.prototype.gameOverLine = function(){
     this.ctx.stroke();
 }
 
-// Sprite
+/**
+ * Object to hold info about the piece of the original sprite
+ * @param       {Object} img    - Image to crop a piece from
+ * @param       {number} x      - Coordinate
+ * @param       {number} y      - Coordinate
+ * @param       {number} width  - horixontal section to crop from x position
+ * @param       {number} height - vertical section to crop from y position
+ * @constructor
+ */
 function Sprite(img, x, y, width, height) {
     this.img = img;
     this.x = x;
@@ -128,7 +182,17 @@ function Sprite(img, x, y, width, height) {
     this.height = height;
 }
 
-// Alien
+/**
+ * Object to hold Sprite and position of each alien
+ * @param       {Object} sprite - Sprite object that holds an are of the original Image
+ * @param       {number} x      - x position on canvas
+ * @param       {number} y      - y position on canvas
+ * @param       {number} offset - horizontal offset to center the image on each column
+ * @param       {number} width  - final width of the sprite
+ * @param       {number} height - final height of the sprite
+ * @param       {number} points - points to give to the user if the alien is killed
+ * @constructor
+ */
 function Alien(sprite, x, y, offset, width, height, points) {
     this.sprite = sprite,
     this.x = x;
@@ -140,18 +204,35 @@ function Alien(sprite, x, y, offset, width, height, points) {
     this.points = points;
 };
 
+/**
+ * Indicate that the alien is killed to not be drawn on canvas
+ */
 Alien.prototype.kill = function(){
     this.alive = false;
 }
 
-// Aliens
-function aliensMove(aliens, dir, amount) {
+/**
+ * Move the whole aliens
+ * @param  {Object[]} aliens - Array that holds all the alive aliens
+ * @param  {number}   dir    - (+1) right and (-1) left
+ * @param  {number}   amount - number of pixels to move
+ */
+function aliensMove(aliens, axis, amount) {
     for (var i = 0; i < aliens.length; i++) {
-        aliens[i][dir] += amount;
+        aliens[i][axis] += amount;
     }
 }
 
-// Ship
+/**
+ * User cannon
+ * @param       {Object} sprite - Sprite object that holds an are of the original Image
+ * @param       {number} x      - x position on canvas
+ * @param       {number} y      - y position on canvas
+ * @param       {number} width  - final width to draw
+ * @param       {number} height - final height to draw
+ * @param       {number} lives  - number of lives left
+ * @constructor
+ */
 function Ship(sprite, x, y, width, height, lives) {
     this.sprite = sprite,
     this.x = x;
@@ -164,6 +245,10 @@ function Ship(sprite, x, y, width, height, lives) {
     this.wave = 1;
 };
 
+/**
+ * Kill the user cannon
+ * @param  {number} hit - number of lives to remove from the user
+ */
 Ship.prototype.kill = function(hit){
     this.lives -= hit;
     this.lives = Math.max(this.lives, 0);
@@ -173,11 +258,21 @@ Ship.prototype.kill = function(hit){
     }
 };
 
+/**
+ * Increase wave info
+ */
 Ship.prototype.newWave = function(){
     this.wave++;
 };
 
-// Bullet
+/**
+ * Bullet object
+ * @param       {number} x         - horizontal position
+ * @param       {number} y         - vertical position
+ * @param       {string} color     - color to show
+ * @param       {number} direction - vertical direction to move the bullet
+ * @constructor
+ */
 function Bullet(x, y, color, direction) {
     this.x = x;
     this.y = y;
@@ -189,14 +284,25 @@ function Bullet(x, y, color, direction) {
     this.alive = true;
 };
 
+/**
+ * Move the bullet
+ */
 Bullet.prototype.move = function () {
     this.y += this.vely * this.direction;
 };
 
+/**
+ * Kill the bullet
+ */
 Bullet.prototype.kill = function(){
     this.alive = false;
 };
 
+/**
+ * Check if the bullet hits alien or user cannon
+ * @param  {Object[]} aliens - Array of alive aliens
+ * @param  {Object}   ship   - user cannon
+ */
 Bullet.prototype.checkHit = function(aliens, ship){
     var nextPosition = this.y + this.height/2 + this.vely*this.direction;
 
@@ -220,11 +326,15 @@ Bullet.prototype.checkHit = function(aliens, ship){
         }
     }
 
+    // Erase bullet when it goes outside the canvas
     if(this.y < 0 || this.y > Board.height){
         this.kill();
     }
 };
 
+/**
+ * Draw all aliens
+ */
 function displayAliens(){
     moveFreqInit--;
     moveFreq = moveFreqInit;
@@ -241,7 +351,10 @@ function displayAliens(){
     }
 };
 
-// InputHandeler
+/**
+ * Help to detect key inputs
+ * @constructor
+ */
 function InputHandeler() {
     this.down = {};
     this.pressed = {};
@@ -256,10 +369,20 @@ function InputHandeler() {
     });
 };
 
+/**
+ * Check if user holds a key
+ * @param  {number} code - keycode
+ * @return {boolean}     - true if user holds the key
+ */
 InputHandeler.prototype.isDown = function (code) {
     return this.down[code];
 };
 
+/**
+ * Check if user press and release a key
+ * @param  {number} code - keycode
+ * @return {boolean}      - true if user press the key
+ */
 InputHandeler.prototype.isPressed = function (code) {
     if (this.pressed[code]) {
         delete this.pressed[code];
