@@ -54,11 +54,20 @@
             <div class="w3-continer">
                 <!-- Navigation links -->
                 <a id="page-title-nav" href="#top" class="smooth w3-bar-item w3-button">Space Invaders</a>
-                <a href="#top" class="smooth w3-bar-item w3-button w3-hide-small">Home</a>
-                <a href="#instruction-section" class="smooth w3-bar-item w3-button w3-hide-small">Instructions</a>
-                <a href="#top-score-section" class="smooth w3-bar-item w3-button w3-hide-small">Top Scores</a>
-                <a href="#user-score-section" class="smooth w3-bar-item w3-button w3-hide-small">Your Scores</a>
-                <a href="game.html" class="smooth w3-bar-item w3-button w3-hide-small">Play</a>
+                <div class="w3-dropdown-hover w3-hide-small">
+                    <button class="w3-button">Game <span class="icon-arrow-down w3-small">&#9660;</span></button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card">
+                        <a href="#instruction-section" class="smooth w3-bar-item w3-button">Instructions</a>
+                        <a href="game.html" class="smooth w3-bar-item w3-button">Play</a>
+                    </div>
+                </div>
+                <div class="w3-dropdown-hover w3-hide-small">
+                    <button class="w3-button">Scores <span class="icon-arrow-down w3-small">&#9660;</span></button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card">
+                        <a href="#top-score-section" class="smooth w3-bar-item w3-button">Top Scores</a>
+                        <a href="#user-score-section" class="smooth w3-bar-item w3-button">Your Scores</a>
+                    </div>
+                </div>
                 <!-- Open navigation sidebar -->
                 <a href="#" id="open-nav-sidebar" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium">&#9776;</a>
             </div>
